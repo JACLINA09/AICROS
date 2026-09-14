@@ -1,16 +1,28 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field, HttpUrl
 from typing import Optional
 
 
 class StudentRegisterRequest(BaseModel):
-    matric_number: Optional[str] = None
+    matric_number: str = Field(..., min_length=1, max_length=30)
+    fullname: str = Field(..., min_length=2, max_length=200)
+    email: EmailStr
+    password: str = Field(..., min_length=8, max_length=100)
+    phone_number: Optional[str] = Field(None, max_length=50)
+    programme: Optional[str] = Field(None, max_length=100)
+    linkedin_url: Optional[HttpUrl] = None
+    github_url: Optional[HttpUrl] = None
+
+
+class StudentResponse(BaseModel):
+    student_id: int
+    matric_number: str
     fullname: str
     email: EmailStr
-    password: str
     phone_number: Optional[str] = None
     programme: Optional[str] = None
-    linkedin_url: Optional[str] = None
-    github_url: Optional[str] = None
+    linkedin_url: Optional[HttpUrl] = None
+    github_url: Optional[HttpUrl] = None
+    email_verified: bool
 
 
 class LoginRequest(BaseModel):

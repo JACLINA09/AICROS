@@ -1,5 +1,4 @@
-from sqlalchemy import Column, BigInteger, String, TIMESTAMP
-from sqlalchemy.sql import func
+from sqlalchemy import BigInteger, Boolean, Column, String, TIMESTAMP, func
 from app.database import Base
 
 
@@ -15,4 +14,8 @@ class Student(Base):
     programme = Column(String(100), nullable=True)
     linkedin_url = Column(String(200), nullable=True)
     github_url = Column(String(200), nullable=True)
+    # Email verification
+    email_verified = Column(Boolean, nullable=False, default=False)
+    verification_token = Column(String(255), nullable=True)
+    verification_token_expires = Column(TIMESTAMP, nullable=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
