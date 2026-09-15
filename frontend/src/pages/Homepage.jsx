@@ -1,54 +1,305 @@
 import { useState, useEffect } from "react";
 
 const styles = {
-  page: { fontFamily: "'Inter', system-ui, sans-serif", background: "#FAFAF9", minHeight: "100vh", color: "#1A1A1A" },
+  page: { 
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif", 
+    background: "#07080c", 
+    minHeight: "100vh", 
+    color: "#f3f4f6",
+    WebkitFontSmoothing: "antialiased",
+    position: "relative",
+    overflowX: "hidden"
+  },
 
-  nav: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 48px", maxWidth: 1200, margin: "0 auto" },
-  logo: { fontSize: 20, fontWeight: 800, background: "linear-gradient(90deg, #2563eb, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  navActions: { display: "flex", gap: 10 },
-  navLoginBtn: { padding: "9px 18px", borderRadius: 10, border: "1px solid #E0E0DA", background: "white", fontSize: 13.5, fontWeight: 600, cursor: "pointer", color: "#444" },
-  navRegisterBtn: { padding: "9px 18px", borderRadius: 10, border: "none", background: "linear-gradient(90deg, #2563eb, #7c3aed)", color: "white", fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
+  // Dynamic mesh-like background glow layers
+  meshBackground: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundImage: `
+      radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 85% 35%, rgba(168, 85, 247, 0.10) 0%, transparent 45%),
+      radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%)
+    `,
+    zIndex: 0,
+    pointerEvents: "none"
+  },
 
-  hero: { display: "flex", alignItems: "center", gap: 60, maxWidth: 1200, margin: "40px auto 100px", padding: "0 48px", flexWrap: "wrap" },
-  heroLeft: { flex: "1 1 440px" },
-  eyebrow: { fontSize: 12.5, fontWeight: 700, color: "#7c3aed", letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 16 },
-  headline: { fontSize: 46, fontWeight: 800, lineHeight: 1.12, letterSpacing: -1.2, margin: "0 0 20px" },
-  headlineAccent: { background: "linear-gradient(90deg, #2563eb, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  subtext: { fontSize: 16, color: "#666", lineHeight: 1.6, maxWidth: 460, margin: "0 0 32px" },
-  heroCtaRow: { display: "flex", gap: 12 },
-  ctaPrimary: { padding: "14px 26px", borderRadius: 12, border: "none", background: "linear-gradient(90deg, #2563eb, #7c3aed)", color: "white", fontSize: 15, fontWeight: 700, cursor: "pointer" },
-  ctaSecondary: { padding: "14px 26px", borderRadius: 12, border: "1.5px solid #D8D8D2", background: "white", color: "#333", fontSize: 15, fontWeight: 700, cursor: "pointer" },
+  nav: { 
+    display: "flex", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    padding: "24px 48px", 
+    maxWidth: 1200, 
+    margin: "0 auto",
+    position: "relative",
+    zIndex: 1
+  },
+  logoGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12
+  },
+  logoIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 16,
+    boxShadow: "0 0 20px rgba(59, 130, 246, 0.5)",
+  },
+  logo: { 
+    fontSize: 22, 
+    fontWeight: 900, 
+    background: "linear-gradient(135deg, #60a5fa, #c084fc, #f472b6)", 
+    WebkitBackgroundClip: "text", 
+    WebkitTextFillColor: "transparent",
+    letterSpacing: -0.5
+  },
+  navActions: { display: "flex", gap: 12 },
+  navLoginBtn: { 
+    padding: "10px 20px", 
+    borderRadius: 12, 
+    border: "1px solid rgba(255, 255, 255, 0.12)", 
+    background: "rgba(255, 255, 255, 0.03)", 
+    fontSize: 14, 
+    fontWeight: 600, 
+    cursor: "pointer", 
+    color: "#e5e7eb",
+    backdropFilter: "blur(12px)",
+    transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
+  },
+  navRegisterBtn: { 
+    padding: "10px 20px", 
+    borderRadius: 12, 
+    border: "none", 
+    background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", 
+    color: "white", 
+    fontSize: 14, 
+    fontWeight: 700, 
+    cursor: "pointer",
+    boxShadow: "0 0 25px rgba(139, 92, 246, 0.45)",
+    transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
+  },
+
+  hero: { 
+    display: "flex", 
+    alignItems: "center", 
+    gap: 60, 
+    maxWidth: 1200, 
+    margin: "40px auto 100px", 
+    padding: "0 48px", 
+    flexWrap: "wrap",
+    position: "relative",
+    zIndex: 1
+  },
+  heroLeft: { flex: "1 1 480px" },
+  eyebrow: { 
+    fontSize: 12, 
+    fontWeight: 800, 
+    color: "#c084fc", 
+    letterSpacing: 2, 
+    textTransform: "uppercase", 
+    marginBottom: 16,
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "6px 14px",
+    background: "rgba(192, 132, 252, 0.08)",
+    borderRadius: "20px",
+    border: "1px solid rgba(192, 132, 252, 0.2)",
+    boxShadow: "inset 0 1px 0 rgba(192, 132, 252, 0.1)"
+  },
+  headline: { 
+    fontSize: 54, 
+    fontWeight: 900, 
+    lineHeight: 1.06, 
+    letterSpacing: -2, 
+    margin: "0 0 20px",
+    color: "#ffffff"
+  },
+  headlineAccent: { 
+    background: "linear-gradient(135deg, #60a5fa, #c084fc, #f472b6)", 
+    WebkitBackgroundClip: "text", 
+    WebkitTextFillColor: "transparent" 
+  },
+  subtext: { 
+    fontSize: 17, 
+    color: "#9ca3af", 
+    lineHeight: 1.65, 
+    maxWidth: 480, 
+    margin: "0 0 32px" 
+  },
+  heroCtaRow: { display: "flex", gap: 14, flexWrap: "wrap" },
+  ctaPrimary: { 
+    padding: "16px 30px", 
+    borderRadius: 14, 
+    border: "none", 
+    background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", 
+    color: "white", 
+    fontSize: 15, 
+    fontWeight: 700, 
+    cursor: "pointer",
+    boxShadow: "0 10px 35px rgba(59, 130, 246, 0.45)",
+    transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
+  },
+  ctaSecondary: { 
+    padding: "16px 30px", 
+    borderRadius: 14, 
+    border: "1.5px solid rgba(255, 255, 255, 0.12)", 
+    background: "rgba(255, 255, 255, 0.02)", 
+    color: "#f3f4f6", 
+    fontSize: 15, 
+    fontWeight: 700, 
+    cursor: "pointer",
+    backdropFilter: "blur(12px)",
+    transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
+  },
 
   heroRight: { flex: "1 1 360px", display: "flex", justifyContent: "center" },
-  scoreCard: { background: "white", borderRadius: 20, padding: 28, width: 320, boxShadow: "0 20px 50px rgba(37,99,235,0.12)", border: "1px solid #EEEEE9" },
-  scoreCardLabel: { fontSize: 11.5, fontWeight: 700, color: "#999", textTransform: "uppercase", letterSpacing: 0.6, margin: "0 0 4px" },
-  scoreRingWrap: { display: "flex", justifyContent: "center", margin: "12px 0 20px" },
-  scoreBreakdownRow: { display: "flex", justifyContent: "space-between", fontSize: 12.5, color: "#666", padding: "8px 0", borderBottom: "1px solid #F2F2EE" },
-  scoreBreakdownVal: { fontWeight: 700, color: "#333" },
+  scoreCard: { 
+    background: "linear-gradient(145deg, rgba(22, 24, 35, 0.85), rgba(13, 15, 22, 0.95))", 
+    backdropFilter: "blur(24px)",
+    borderRadius: 26, 
+    padding: 32, 
+    width: 320, 
+    boxShadow: "0 30px 70px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12)", 
+    border: "1px solid rgba(255, 255, 255, 0.08)" 
+  },
+  scoreCardLabel: { 
+    fontSize: 11.5, 
+    fontWeight: 700, 
+    color: "#9ca3af", 
+    textTransform: "uppercase", 
+    letterSpacing: 1, 
+    margin: "0 0 4px" 
+  },
+  scoreRingWrap: { display: "flex", justifyContent: "center", margin: "16px 0 24px" },
+  scoreBreakdownRow: { 
+    display: "flex", 
+    justifyContent: "space-between", 
+    fontSize: 13, 
+    color: "#9ca3af", 
+    padding: "10px 0", 
+    borderBottom: "1px solid rgba(255, 255, 255, 0.05)" 
+  },
+  scoreBreakdownVal: { fontWeight: 700, color: "#f3f4f6" },
 
-  section: { maxWidth: 1200, margin: "0 auto", padding: "60px 48px" },
-  sectionEyebrow: { fontSize: 12.5, fontWeight: 700, color: "#7c3aed", letterSpacing: 1.2, textTransform: "uppercase", marginBottom: 10, textAlign: "center" },
-  sectionTitle: { fontSize: 30, fontWeight: 800, textAlign: "center", margin: "0 0 50px", letterSpacing: -0.6 },
+  section: { maxWidth: 1200, margin: "0 auto", padding: "80px 48px", position: "relative", zIndex: 1 },
+  sectionEyebrow: { 
+    fontSize: 12, 
+    fontWeight: 800, 
+    color: "#c084fc", 
+    letterSpacing: 2, 
+    textTransform: "uppercase", 
+    marginBottom: 10, 
+    textAlign: "center" 
+  },
+  sectionTitle: { 
+    fontSize: 36, 
+    fontWeight: 900, 
+    textAlign: "center", 
+    margin: "0 0 60px", 
+    letterSpacing: -1,
+    color: "#ffffff"
+  },
 
-  stepsGrid: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 },
-  stepCard: { position: "relative" },
-  stepNum: { fontSize: 13, fontWeight: 800, color: "#2563eb", marginBottom: 10 },
-  stepTitle: { fontSize: 15.5, fontWeight: 700, margin: "0 0 8px" },
-  stepDesc: { fontSize: 13, color: "#777", lineHeight: 1.6, margin: 0 },
-  stepConnector: { position: "absolute", top: 8, left: "calc(100% + 12px)", width: "calc(100% - 24px)", borderTop: "1.5px dashed #D8D8D2" },
+  stepsGrid: { 
+    display: "grid", 
+    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", 
+    gap: 32 
+  },
+  stepCard: { 
+    position: "relative", 
+    padding: "24px", 
+    background: "rgba(20, 22, 32, 0.4)",
+    borderRadius: 20,
+    border: "1px solid rgba(255, 255, 255, 0.04)",
+    backdropFilter: "blur(10px)",
+    transition: "all 0.3s ease"
+  },
+  stepNum: { 
+    fontSize: 12, 
+    fontWeight: 900, 
+    color: "#60a5fa", 
+    marginBottom: 12,
+    display: "inline-block",
+    padding: "4px 10px",
+    background: "rgba(96, 165, 250, 0.1)",
+    borderRadius: "8px"
+  },
+  stepTitle: { fontSize: 16, fontWeight: 700, margin: "0 0 8px", color: "#f3f4f6" },
+  stepDesc: { fontSize: 13.5, color: "#9ca3af", lineHeight: 1.65, margin: 0 },
+  stepConnector: { 
+    position: "absolute", 
+    top: 36, 
+    left: "calc(100% + 16px)", 
+    width: "calc(100% - 32px)", 
+    borderTop: "2px dashed rgba(255, 255, 255, 0.1)", 
+    display: "none" 
+  },
 
-  featureGrid: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 18 },
-  featureCard: { background: "white", borderRadius: 16, padding: 24, border: "1px solid #EEEEE9" },
-  featureIcon: { width: 40, height: 40, borderRadius: 11, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, marginBottom: 14 },
-  featureTitle: { fontSize: 14.5, fontWeight: 700, margin: "0 0 6px" },
-  featureDesc: { fontSize: 12.5, color: "#888", lineHeight: 1.6, margin: 0 },
+  featureGrid: { 
+    display: "grid", 
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", 
+    gap: 24 
+  },
+  featureCard: { 
+    background: "linear-gradient(145deg, rgba(20, 22, 32, 0.6), rgba(13, 15, 22, 0.8))", 
+    backdropFilter: "blur(16px)",
+    borderRadius: 22, 
+    padding: 30, 
+    border: "1px solid rgba(255, 255, 255, 0.06)",
+    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
+  },
+  featureIcon: { 
+    width: 48, 
+    height: 48, 
+    borderRadius: 14, 
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    fontSize: 20, 
+    marginBottom: 18,
+    boxShadow: "0 8px 20px rgba(0,0,0,0.3)"
+  },
+  featureTitle: { fontSize: 16, fontWeight: 700, margin: "0 0 8px", color: "#f3f4f6" },
+  featureDesc: { fontSize: 13.5, color: "#9ca3af", lineHeight: 1.65, margin: 0 },
 
-  finalCta: { textAlign: "center", background: "linear-gradient(90deg, #2563eb, #7c3aed)", borderRadius: 24, padding: "56px 40px", margin: "40px auto 80px", maxWidth: 1104 },
-  finalCtaTitle: { fontSize: 28, fontWeight: 800, color: "white", margin: "0 0 10px" },
-  finalCtaSub: { fontSize: 14.5, color: "rgba(255,255,255,0.85)", margin: "0 0 26px" },
-  finalCtaBtn: { padding: "14px 30px", borderRadius: 12, border: "none", background: "white", color: "#2563eb", fontSize: 15, fontWeight: 700, cursor: "pointer" },
+  finalCta: { 
+    textAlign: "center", 
+    background: "linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(139, 92, 246, 0.18))", 
+    border: "1px solid rgba(139, 92, 246, 0.35)",
+    borderRadius: 28, 
+    padding: "64px 40px", 
+    margin: "60px auto 100px", 
+    maxWidth: 1104,
+    boxShadow: "0 25px 60px rgba(139, 92, 246, 0.2)",
+    backdropFilter: "blur(24px)",
+    position: "relative",
+    zIndex: 1
+  },
+  finalCtaTitle: { fontSize: 36, fontWeight: 900, color: "white", margin: "0 0 12px", letterSpacing: -1 },
+  finalCtaSub: { fontSize: 15, color: "#9ca3af", margin: "0 0 32px", maxWidth: 500, marginLeft: "auto", marginRight: "auto" },
+  finalCtaBtn: { 
+    padding: "16px 36px", 
+    borderRadius: 14, 
+    border: "none", 
+    background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", 
+    color: "white", 
+    fontSize: 15, 
+    fontWeight: 700, 
+    cursor: "pointer",
+    boxShadow: "0 10px 35px rgba(139, 92, 246, 0.45)",
+    transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
+  },
 
-  footer: { textAlign: "center", padding: "24px 20px", fontSize: 12, color: "#999" },
+  footer: { textAlign: "center", padding: "32px 20px", fontSize: 12.5, color: "#6b7280", borderTop: "1px solid rgba(255, 255, 255, 0.05)", maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 },
 };
 
 function AnimatedScoreRing({ target = 87, size = 130 }) {
@@ -71,7 +322,7 @@ function AnimatedScoreRing({ target = 87, size = 130 }) {
 
   return (
     <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-      <circle cx={size / 2} cy={size / 2} r={radius} stroke="#F0F0EE" strokeWidth={10} fill="none" />
+      <circle cx={size / 2} cy={size / 2} r={radius} stroke="rgba(255,255,255,0.06)" strokeWidth={10} fill="none" />
       <circle
         cx={size / 2} cy={size / 2} r={radius}
         stroke="url(#ringGradient)" strokeWidth={10} fill="none"
@@ -80,13 +331,13 @@ function AnimatedScoreRing({ target = 87, size = 130 }) {
       />
       <defs>
         <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#2563eb" />
-          <stop offset="100%" stopColor="#7c3aed" />
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#c084fc" />
         </linearGradient>
       </defs>
       <text
         x="50%" y="50%" textAnchor="middle" dominantBaseline="central"
-        style={{ transform: `rotate(90deg) translate(0px, -${size}px)`, transformOrigin: `${size / 2}px ${size / 2}px`, fontSize: 30, fontWeight: 800, fill: "#1A1A1A", fontFamily: "'Inter', sans-serif" }}
+        style={{ transform: `rotate(90deg) translate(0px, -${size}px)`, transformOrigin: `${size / 2}px ${size / 2}px`, fontSize: 32, fontWeight: 900, fill: "#ffffff", fontFamily: "'Inter', sans-serif" }}
       >
         {value}
       </text>
@@ -102,26 +353,51 @@ const steps = [
 ];
 
 const features = [
-  { icon: "📄", bg: "#EEF3FF", title: "AI resume scoring", desc: "Quality and ATS compatibility scored automatically, with specific feedback." },
-  { icon: "🎯", bg: "#F3EEFF", title: "Skill-based job matching", desc: "Ranked by how well your actual skills fit each role, not just keywords." },
-  { icon: "🧩", bg: "#FFF3E9", title: "Career simulations", desc: "Job-specific scenarios, scored in real time, before you ever apply." },
-  { icon: "📊", bg: "#E9FBF3", title: "Career portfolio", desc: "One combined readiness score, built from every part of your profile." },
+  { icon: "📄", bg: "rgba(59, 130, 246, 0.18)", title: "AI resume scoring", desc: "Quality and ATS compatibility scored automatically, with specific feedback." },
+  { icon: "🎯", bg: "rgba(168, 85, 247, 0.18)", title: "Skill-based job matching", desc: "Ranked by how well your actual skills fit each role, not just keywords." },
+  { icon: "🧩", bg: "rgba(249, 115, 22, 0.18)", title: "Career simulations", desc: "Job-specific scenarios, scored in real time, before you ever apply." },
+  { icon: "📊", bg: "rgba(16, 185, 129, 0.18)", title: "Career portfolio", desc: "One combined readiness score, built from every part of your profile." },
 ];
 
 function Homepage({ onLoginClick, onRegisterClick }) {
   return (
     <div style={styles.page}>
+      <div style={styles.meshBackground} />
+
+      <style>{`
+        button:hover { opacity: 0.92; transform: translateY(-2px); }
+        button:active { transform: translateY(0); }
+        @media (min-width: 1024px) {
+          .desktop-step-connector { display: block !important; }
+        }
+        .step-card:hover {
+          border-color: rgba(96, 165, 250, 0.3) !important;
+          background: rgba(25, 28, 42, 0.6) !important;
+          box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+          transform: translateY(-4px);
+        }
+        .feature-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+          border-color: rgba(139, 92, 246, 0.4) !important;
+          background: linear-gradient(145deg, rgba(25, 28, 42, 0.8), rgba(18, 20, 30, 0.95)) !important;
+        }
+      `}</style>
+
       <nav style={styles.nav}>
-        <div style={styles.logo}>AI-CROS</div>
+        <div style={styles.logoGroup}>
+          <div style={styles.logoIcon}>⚡</div>
+          <div style={styles.logo}>AI-CROS</div>
+        </div>
         <div style={styles.navActions}>
           <button style={styles.navLoginBtn} onClick={onLoginClick}>Log in</button>
           <button style={styles.navRegisterBtn} onClick={onRegisterClick}>Get started</button>
         </div>
       </nav>
 
-      <section style={styles.hero}>
+      <header style={styles.hero}>
         <div style={styles.heroLeft}>
-          <p style={styles.eyebrow}>AI-powered career readiness</p>
+          <p style={styles.eyebrow}>✦ Next-Gen Career Intelligence</p>
           <h1 style={styles.headline}>
             Know exactly how <span style={styles.headlineAccent}>job-ready</span> you really are.
           </h1>
@@ -151,18 +427,18 @@ function Homepage({ onLoginClick, onRegisterClick }) {
             ))}
           </div>
         </div>
-      </section>
+      </header>
 
       <section style={styles.section}>
         <p style={styles.sectionEyebrow}>The process</p>
         <h2 style={styles.sectionTitle}>Four steps, one honest score</h2>
         <div style={styles.stepsGrid}>
           {steps.map((step, i) => (
-            <div key={step.title} style={styles.stepCard}>
+            <div key={step.title} className="step-card" style={styles.stepCard}>
               <p style={styles.stepNum}>{String(i + 1).padStart(2, "0")}</p>
               <p style={styles.stepTitle}>{step.title}</p>
               <p style={styles.stepDesc}>{step.desc}</p>
-              {i < steps.length - 1 && <div style={styles.stepConnector} />}
+              {i < steps.length - 1 && <div className="desktop-step-connector" style={styles.stepConnector} />}
             </div>
           ))}
         </div>
@@ -173,7 +449,7 @@ function Homepage({ onLoginClick, onRegisterClick }) {
         <h2 style={styles.sectionTitle}>Built around how hiring actually works</h2>
         <div style={styles.featureGrid}>
           {features.map((f) => (
-            <div key={f.title} style={styles.featureCard}>
+            <div key={f.title} className="feature-card" style={styles.featureCard}>
               <div style={{ ...styles.featureIcon, background: f.bg }}>{f.icon}</div>
               <p style={styles.featureTitle}>{f.title}</p>
               <p style={styles.featureDesc}>{f.desc}</p>

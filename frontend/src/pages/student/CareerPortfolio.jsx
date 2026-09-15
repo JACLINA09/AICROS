@@ -3,35 +3,35 @@ import { getPortfolio } from "../../services/portfolioService";
 import { applyToJob } from "../../services/jobService";
 
 const styles = {
-  page: { padding: "32px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#F7F7F5", minHeight: "100vh" },
-  title: { fontSize: 24, fontWeight: 800, margin: "0 0 4px" },
-  subtitle: { fontSize: 14, color: "#666", margin: "0 0 24px" },
-  loadingText: { textAlign: "center", color: "#888", padding: 40 },
-  error: { color: "#dc2626", fontSize: 13, textAlign: "center", padding: 20 },
+  page: { padding: "32px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#0d1117", minHeight: "100vh" },
+  title: { fontSize: 24, fontWeight: 800, margin: "0 0 4px", color: "#f8fafc" },
+  subtitle: { fontSize: 14, color: "#94a3b8", margin: "0 0 24px" },
+  loadingText: { textAlign: "center", color: "#94a3b8", padding: 40 },
+  error: { color: "#f87171", fontSize: 13, textAlign: "center", padding: 20 },
 
-  heroCard: { borderRadius: 16, overflow: "hidden", marginBottom: 16, boxShadow: "0 4px 24px rgba(0,0,0,0.06)" },
-  heroTop: { background: "linear-gradient(90deg, #2563eb, #7c3aed)", padding: "28px 32px", color: "white" },
-  heroLabel: { fontSize: 12.5, fontWeight: 700, margin: "0 0 6px", opacity: 0.85, textTransform: "uppercase", letterSpacing: 0.6 },
-  heroScore: { fontSize: 52, fontWeight: 800, margin: "0 0 4px", letterSpacing: -2 },
-  heroJob: { fontSize: 14, opacity: 0.9, margin: 0 },
+  heroCard: { borderRadius: 16, overflow: "hidden", marginBottom: 16, border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)" },
+  heroTop: { background: "linear-gradient(135deg, #1f2937, #111827)", padding: "28px 32px", color: "white", borderBottom: "1px solid rgba(34, 197, 94, 0.2)" },
+  heroLabel: { fontSize: 12.5, fontWeight: 700, margin: "0 0 6px", opacity: 0.85, textTransform: "uppercase", letterSpacing: 0.6, color: "#4ade80" },
+  heroScore: { fontSize: 52, fontWeight: 800, margin: "0 0 4px", letterSpacing: -2, color: "#f8fafc" },
+  heroJob: { fontSize: 14, opacity: 0.9, margin: 0, color: "#cbd5e1" },
 
-  card: { background: "white", borderRadius: 16, padding: 24, marginBottom: 16, boxShadow: "0 4px 24px rgba(0,0,0,0.06)" },
+  card: { background: "#161b22", borderRadius: 16, padding: 24, marginBottom: 16, border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)" },
   breakdownGrid: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 },
-  breakdownBox: { textAlign: "center", padding: 16, borderRadius: 12, background: "#F7F7F5" },
-  breakdownValue: { fontSize: 26, fontWeight: 800, margin: 0 },
-  breakdownLabel: { fontSize: 11, color: "#777", margin: "4px 0 0", textTransform: "uppercase", letterSpacing: 0.4 },
-  breakdownWeight: { fontSize: 10.5, color: "#aaa", margin: "2px 0 0" },
+  breakdownBox: { textAlign: "center", padding: 16, borderRadius: 12, background: "#0d1117", border: "1px solid rgba(255, 255, 255, 0.05)" },
+  breakdownValue: { fontSize: 26, fontWeight: 800, margin: 0, color: "#f8fafc" },
+  breakdownLabel: { fontSize: 11, color: "#94a3b8", margin: "4px 0 0", textTransform: "uppercase", letterSpacing: 0.4 },
+  breakdownWeight: { fontSize: 10.5, color: "#64748b", margin: "2px 0 0" },
 
-  formulaBox: { background: "#F7F7F5", borderRadius: 10, padding: 14, fontSize: 12.5, color: "#666", marginTop: 16 },
+  formulaBox: { background: "#0d1117", borderRadius: 10, padding: 14, fontSize: 12.5, color: "#94a3b8", marginTop: 16, border: "1px solid rgba(255, 255, 255, 0.05)" },
 
   applyBtn: {
     width: "100%", padding: "13px", borderRadius: 10, border: "none",
-    background: "linear-gradient(90deg, #2563eb, #7c3aed)", color: "white",
+    background: "#22c55e", color: "white",
     fontSize: 14.5, fontWeight: 700, cursor: "pointer",
   },
   applyBtnDisabled: {
-    width: "100%", padding: "13px", borderRadius: 10, border: "1px solid #A8DCC0",
-    background: "#E9F7EF", color: "#1a7a44", fontSize: 14.5, fontWeight: 700, cursor: "default",
+    width: "100%", padding: "13px", borderRadius: 10, border: "1px solid rgba(34, 197, 94, 0.2)",
+    background: "rgba(34, 197, 94, 0.1)", color: "#4ade80", fontSize: 14.5, fontWeight: 700, cursor: "default",
   },
 };
 
@@ -111,7 +111,7 @@ function CareerPortfolio({ student, jobId = 1 }) {
         </div>
 
         <div style={styles.formulaBox}>
-          Career readiness = (Resume × 0.15) + (ATS × 0.10) + (Skill match × 0.25) + (Simulation × 0.50) = <strong>{score}%</strong>
+          Career readiness = (Resume × 0.15) + (ATS × 0.10) + (Skill match × 0.25) + (Simulation × 0.50) = <strong style={{ color: "#f8fafc" }}>{score}%</strong>
         </div>
       </div>
 

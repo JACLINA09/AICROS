@@ -2,24 +2,32 @@ import { useState, useEffect } from "react";
 import { getMyApplications } from "../../services/jobService";
 
 const styles = {
-  page: { padding: "32px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#F7F7F5", minHeight: "100vh" },
-  title: { fontSize: 24, fontWeight: 800, margin: "0 0 4px" },
-  subtitle: { fontSize: 14, color: "#666", margin: "0 0 24px" },
-  loadingText: { textAlign: "center", color: "#888", padding: 40 },
+  page: { padding: "32px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#0d1117", minHeight: "100vh" },
+  title: { fontSize: 24, fontWeight: 800, margin: "0 0 4px", color: "#f8fafc" },
+  subtitle: { fontSize: 14, color: "#94a3b8", margin: "0 0 24px" },
+  loadingText: { textAlign: "center", color: "#94a3b8", padding: 40 },
 
   card: {
-    background: "white", borderRadius: 14, padding: 18, marginBottom: 10,
-    boxShadow: "0 4px 24px rgba(0,0,0,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center",
+    background: "#161b22", borderRadius: 14, padding: 18, marginBottom: 10,
+    border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)", display: "flex", justifyContent: "space-between", alignItems: "center",
   },
-  jobTitle: { fontSize: 15, fontWeight: 700, margin: 0 },
+  jobTitle: { fontSize: 15, fontWeight: 700, margin: 0, color: "#f8fafc" },
   statusBadge: (status) => {
     const colors = {
-      Pending: { bg: "#FFF6E5", text: "#b8860b" },
-      Approved: { bg: "#E9F7EF", text: "#1a7a44" },
-      Rejected: { bg: "#FDECEC", text: "#c0392b" },
+      Pending: { bg: "rgba(234, 179, 8, 0.1)", text: "#facc15", border: "rgba(234, 179, 8, 0.2)" },
+      Approved: { bg: "rgba(34, 197, 94, 0.1)", text: "#4ade80", border: "rgba(34, 197, 94, 0.2)" },
+      Rejected: { bg: "rgba(239, 68, 68, 0.1)", text: "#f87171", border: "rgba(239, 68, 68, 0.2)" },
     };
     const c = colors[status] || colors.Pending;
-    return { background: c.bg, color: c.text, fontSize: 12, fontWeight: 700, padding: "5px 12px", borderRadius: 8 };
+    return { 
+      background: c.bg, 
+      color: c.text, 
+      border: `1px solid ${c.border}`,
+      fontSize: 12, 
+      fontWeight: 700, 
+      padding: "5px 12px", 
+      borderRadius: 8 
+    };
   },
 };
 

@@ -3,49 +3,49 @@ import { getJobDetail, applyToJob } from "../../services/jobService";
 import { getLatestResume } from "../../services/resumeService";
 
 const styles = {
-  page: { padding: "32px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#F7F7F5", minHeight: "100vh" },
+  page: { padding: "32px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#0d1117", minHeight: "100vh" },
   backBtn: {
-    padding: "6px 14px", borderRadius: 8, border: "1px solid #D0D0D0", background: "white",
-    fontSize: 12.5, fontWeight: 600, cursor: "pointer", color: "#444", marginBottom: 20,
+    padding: "6px 14px", borderRadius: 8, border: "1px solid rgba(255, 255, 255, 0.12)", background: "#161b22",
+    fontSize: 12.5, fontWeight: 600, cursor: "pointer", color: "#cbd5e1", marginBottom: 20,
   },
-  loadingText: { textAlign: "center", color: "#888", padding: 40 },
-  error: { color: "#dc2626", fontSize: 13, textAlign: "center", padding: 20 },
+  loadingText: { textAlign: "center", color: "#94a3b8", padding: 40 },
+  error: { color: "#f87171", fontSize: 13, textAlign: "center", padding: 20 },
 
   headerRow: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 },
-  title: { fontSize: 24, fontWeight: 800, margin: "0 0 4px" },
-  meta: { fontSize: 14, color: "#777", margin: 0 },
+  title: { fontSize: 24, fontWeight: 800, margin: "0 0 4px", color: "#f8fafc" },
+  meta: { fontSize: 14, color: "#94a3b8", margin: 0 },
 
   compatBox: { textAlign: "center", flexShrink: 0 },
   compatScore: (score) => ({
     fontSize: 40, fontWeight: 800, margin: 0,
-    color: score >= 70 ? "#1a7a44" : score >= 40 ? "#b8860b" : "#c0392b",
+    color: score >= 70 ? "#4ade80" : score >= 40 ? "#facc15" : "#f87171",
   }),
-  compatLabel: { fontSize: 11.5, color: "#888", margin: "2px 0 0", textTransform: "uppercase", letterSpacing: 0.5 },
+  compatLabel: { fontSize: 11.5, color: "#94a3b8", margin: "2px 0 0", textTransform: "uppercase", letterSpacing: 0.5 },
 
-  card: { background: "white", borderRadius: 16, padding: 24, marginBottom: 16, boxShadow: "0 4px 24px rgba(0,0,0,0.06)" },
-  sectionTitle: { fontSize: 14, fontWeight: 700, margin: "0 0 10px" },
-  bodyText: { fontSize: 13.5, color: "#555", lineHeight: 1.7, margin: 0 },
+  card: { background: "#161b22", borderRadius: 16, padding: 24, marginBottom: 16, border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)" },
+  sectionTitle: { fontSize: 14, fontWeight: 700, margin: "0 0 10px", color: "#f8fafc" },
+  bodyText: { fontSize: 13.5, color: "#cbd5e1", lineHeight: 1.7, margin: 0 },
 
   skillsRow: { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 6 },
   skillChipMatched: {
-    background: "#E9F7EF", border: "1px solid #A8DCC0", color: "#1a7a44",
+    background: "rgba(34, 197, 94, 0.1)", border: "1px solid rgba(34, 197, 94, 0.2)", color: "#4ade80",
     fontSize: 12, fontWeight: 600, padding: "5px 12px", borderRadius: 8,
   },
   skillChipMissing: {
-    background: "#FDECEC", border: "1px solid #F3B6B6", color: "#c0392b",
+    background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.2)", color: "#f87171",
     fontSize: 12, fontWeight: 600, padding: "5px 12px", borderRadius: 8,
   },
 
   applyBtn: {
     width: "100%", padding: "13px", borderRadius: 10, border: "none",
-    background: "linear-gradient(90deg, #2563eb, #7c3aed)", color: "white",
+    background: "#22c55e", color: "white",
     fontSize: 14.5, fontWeight: 700, cursor: "pointer",
   },
   applyBtnDisabled: {
-    width: "100%", padding: "13px", borderRadius: 10, border: "1px solid #A8DCC0",
-    background: "#E9F7EF", color: "#1a7a44", fontSize: 14.5, fontWeight: 700, cursor: "default",
+    width: "100%", padding: "13px", borderRadius: 10, border: "1px solid rgba(34, 197, 94, 0.2)",
+    background: "rgba(34, 197, 94, 0.1)", color: "#4ade80", fontSize: 14.5, fontWeight: 700, cursor: "default",
   },
-  applyError: { color: "#dc2626", fontSize: 13, textAlign: "center", marginTop: 10 },
+  applyError: { color: "#f87171", fontSize: 13, textAlign: "center", marginTop: 10 },
 };
 
 function JobDetail({ jobId, student, onBack }) {
@@ -130,6 +130,17 @@ function JobDetail({ jobId, student, onBack }) {
             {job.missing_skills.map((s) => <span key={s} style={styles.skillChipMissing}>✗ {s}</span>)}
           </div>
         )}
+      </div>
+
+      <div style={{ marginTop: 20 }}>
+        {applied ? (
+          <div style={styles.applyBtnDisabled}>✓ Applied Successfully</div>
+        ) : (
+          <button style={styles.applyBtn} disabled={applying} onClick={handleApply}>
+            {applying ? "Submitting Application..." : "Apply Now"}
+          </button>
+        )}
+        {error && <p style={styles.applyError}>{error}</p>}
       </div>
 
     </div>

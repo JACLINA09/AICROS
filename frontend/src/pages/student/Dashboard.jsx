@@ -1,55 +1,57 @@
 import { useState, useEffect } from "react";
 
 const styles = {
-  page: { padding: "28px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#FAFAF9", minHeight: "100vh" },
+  page: { padding: "28px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#0d1117", minHeight: "100vh" },
   headerRow: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 },
-  title: { fontSize: 22, fontWeight: 800, margin: 0 },
-  subtitle: { fontSize: 13.5, color: "#888", margin: "4px 0 0" },
+  title: { fontSize: 22, fontWeight: 800, margin: 0, color: "#f8fafc" },
+  subtitle: { fontSize: 13.5, color: "#94a3b8", margin: "4px 0 0" },
 
   statsRow: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 20 },
-  statCard: { background: "white", borderRadius: 16, padding: "18px 20px", border: "1px solid #F0F0EE" },
+  statCard: { background: "#161b22", borderRadius: 16, padding: "18px 20px", border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)" },
   statTopRow: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 },
-  statLabel: { fontSize: 13, color: "#888", fontWeight: 600 },
+  statLabel: { fontSize: 13, color: "#94a3b8", fontWeight: 600 },
   statBadge: (positive) => ({
     fontSize: 11, fontWeight: 700, padding: "3px 8px", borderRadius: 20,
-    background: positive ? "#E9F7EF" : "#FDECEC", color: positive ? "#1a7a44" : "#c0392b",
+    background: positive ? "rgba(34, 197, 94, 0.1)" : "rgba(239, 68, 68, 0.1)", 
+    color: positive ? "#4ade80" : "#f87171",
+    border: `1px solid ${positive ? "rgba(34, 197, 94, 0.2)" : "rgba(239, 68, 68, 0.2)"}`
   }),
-  statValue: { fontSize: 28, fontWeight: 800, margin: 0 },
-  statSub: { fontSize: 12, color: "#aaa", margin: "2px 0 0" },
+  statValue: { fontSize: 28, fontWeight: 800, margin: 0, color: "#f8fafc" },
+  statSub: { fontSize: 12, color: "#64748b", margin: "2px 0 0" },
 
   bodyGrid: { display: "grid", gridTemplateColumns: "1fr 320px", gap: 16, alignItems: "start" },
 
-  mainCard: { background: "white", borderRadius: 16, padding: 24, border: "1px solid #F0F0EE", marginBottom: 16 },
+  mainCard: { background: "#161b22", borderRadius: 16, padding: 24, border: "1px solid rgba(255, 255, 255, 0.08)", marginBottom: 16, boxShadow: "0 4px 24px rgba(0,0,0,0.4)" },
   mainCardHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 },
-  mainCardTitle: { fontSize: 15, fontWeight: 700, margin: 0 },
+  mainCardTitle: { fontSize: 15, fontWeight: 700, margin: 0, color: "#f8fafc" },
 
   ringWrap: { display: "flex", alignItems: "center", gap: 28 },
   breakdownList: { flex: 1 },
   breakdownRow: { marginBottom: 14 },
   breakdownTopRow: { display: "flex", justifyContent: "space-between", fontSize: 12.5, marginBottom: 5 },
-  breakdownLabel: { color: "#666", fontWeight: 600 },
-  breakdownVal: { color: "#333", fontWeight: 700 },
-  barTrack: { height: 6, background: "#F0F0EE", borderRadius: 4 },
+  breakdownLabel: { color: "#94a3b8", fontWeight: 600 },
+  breakdownVal: { color: "#f8fafc", fontWeight: 700 },
+  barTrack: { height: 6, background: "rgba(255, 255, 255, 0.06)", borderRadius: 4 },
   barFill: (pct, color) => ({ height: "100%", width: `${pct}%`, background: color, borderRadius: 4 }),
 
-  listCard: { background: "white", borderRadius: 16, padding: 24, border: "1px solid #F0F0EE" },
-  jobRow: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #F5F5F3" },
-  jobTitle: { fontSize: 13.5, fontWeight: 700, margin: 0 },
-  jobMeta: { fontSize: 11.5, color: "#999", margin: "2px 0 0" },
-  jobScore: (score) => ({ fontSize: 13, fontWeight: 800, color: score >= 70 ? "#1a7a44" : score >= 40 ? "#b8860b" : "#c0392b" }),
+  listCard: { background: "#161b22", borderRadius: 16, padding: 24, border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)" },
+  jobRow: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid rgba(255, 255, 255, 0.06)" },
+  jobTitle: { fontSize: 13.5, fontWeight: 700, margin: 0, color: "#f8fafc" },
+  jobMeta: { fontSize: 11.5, color: "#64748b", margin: "2px 0 0" },
+  jobScore: (score) => ({ fontSize: 13, fontWeight: 800, color: score >= 70 ? "#4ade80" : score >= 40 ? "#facc15" : "#f87171" }),
 
   sidebar: { display: "flex", flexDirection: "column", gap: 16 },
-  sideCard: { background: "white", borderRadius: 16, padding: 20, border: "1px solid #F0F0EE" },
-  sideCardTitle: { fontSize: 13.5, fontWeight: 700, margin: "0 0 14px" },
-  taskRow: { display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 0", borderBottom: "1px solid #F5F5F3" },
-  taskDot: (done) => ({ width: 8, height: 8, borderRadius: "50%", marginTop: 5, flexShrink: 0, background: done ? "#1a7a44" : "#D8D8D2" }),
-  taskLabel: { fontSize: 12.5, fontWeight: 600, color: "#333", margin: 0 },
-  taskSub: { fontSize: 11, color: "#999", margin: "2px 0 0" },
+  sideCard: { background: "#161b22", borderRadius: 16, padding: 20, border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)" },
+  sideCardTitle: { fontSize: 13.5, fontWeight: 700, margin: "0 0 14px", color: "#f8fafc" },
+  taskRow: { display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 0", borderBottom: "1px solid rgba(255, 255, 255, 0.06)" },
+  taskDot: (done) => ({ width: 8, height: 8, borderRadius: "50%", marginTop: 5, flexShrink: 0, background: done ? "#4ade80" : "rgba(255, 255, 255, 0.2)" }),
+  taskLabel: { fontSize: 12.5, fontWeight: 600, color: "#cbd5e1", margin: 0 },
+  taskSub: { fontSize: 11, color: "#64748b", margin: "2px 0 0" },
 
-  tipCard: { background: "linear-gradient(135deg, #2563eb, #7c3aed)", borderRadius: 16, padding: 20, color: "white" },
-  tipLabel: { fontSize: 12, fontWeight: 700, opacity: 0.85, margin: "0 0 8px", textTransform: "uppercase", letterSpacing: 0.5 },
-  tipText: { fontSize: 13, lineHeight: 1.6, margin: "0 0 14px" },
-  tipBtn: { padding: "8px 14px", borderRadius: 9, border: "none", background: "white", color: "#2563eb", fontSize: 12.5, fontWeight: 700, cursor: "pointer" },
+  tipCard: { background: "linear-gradient(135deg, #1f2937, #111827)", border: "1px solid rgba(34, 197, 94, 0.2)", borderRadius: 16, padding: 20, color: "white" },
+  tipLabel: { fontSize: 12, fontWeight: 700, opacity: 0.85, margin: "0 0 8px", textTransform: "uppercase", letterSpacing: 0.5, color: "#4ade80" },
+  tipText: { fontSize: 13, lineHeight: 1.6, margin: "0 0 14px", color: "#cbd5e1" },
+  tipBtn: { padding: "8px 14px", borderRadius: 9, border: "none", background: "#22c55e", color: "#ffffff", fontSize: 12.5, fontWeight: 700, cursor: "pointer" },
 };
 
 function Dashboard({ student, onNavigate }) {
@@ -104,10 +106,10 @@ function Dashboard({ student, onNavigate }) {
             </div>
             <div style={styles.breakdownList}>
               {[
-                ["Resume Quality", 0, "#2563eb"],
-                ["ATS Compatibility", 0, "#7c3aed"],
-                ["Skill Match", 0, "#0ea5a5"],
-                ["Simulation Score", 0, "#e0a800"],
+                ["Resume Quality", 0, "#3b82f6"],
+                ["ATS Compatibility", 0, "#8b5cf6"],
+                ["Skill Match", 0, "#14b8a6"],
+                ["Simulation Score", 0, "#eab308"],
               ].map(([label, val, color]) => (
                 <div key={label} style={styles.breakdownRow}>
                   <div style={styles.breakdownTopRow}>
@@ -124,7 +126,7 @@ function Dashboard({ student, onNavigate }) {
             <div style={styles.mainCardHeader}>
               <p style={styles.mainCardTitle}>Recommended jobs</p>
             </div>
-            <p style={{ fontSize: 12.5, color: "#999" }}>Upload a resume to see jobs ranked by your compatibility.</p>
+            <p style={{ fontSize: 12.5, color: "#64748b" }}>Upload a resume to see jobs ranked by your compatibility.</p>
           </div>
         </div>
 

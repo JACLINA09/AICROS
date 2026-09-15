@@ -21,15 +21,15 @@ import UpskillingCourses from "./pages/admin/UpskillingCourses";
 import "./App.css";
 
 const navStyles = {
-  topBar: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 40px", background: "white", borderBottom: "1px solid #F0F0EE" },
-  logo: { fontSize: 18, fontWeight: 800, background: "linear-gradient(90deg, #2563eb, #7c3aed)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginRight: 28 },
-  pillGroup: { display: "flex", alignItems: "center", gap: 4, background: "#F5F5F3", borderRadius: 12, padding: 4 },
+  topBar: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 40px", background: "#161b22", borderBottom: "1px solid rgba(255, 255, 255, 0.08)" },
+  logo: { fontSize: 18, fontWeight: 800, background: "linear-gradient(90deg, #4ade80, #38bdf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginRight: 28 },
+  pillGroup: { display: "flex", alignItems: "center", gap: 4, background: "#0d1117", borderRadius: 12, padding: 4, border: "1px solid rgba(255, 255, 255, 0.05)" },
   pill: (active) => ({
     padding: "8px 16px", borderRadius: 9, border: "none", cursor: "pointer",
-    fontSize: 13, fontWeight: 600, background: active ? "white" : "transparent",
-    color: active ? "#1A1A1A" : "#888", boxShadow: active ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
+    fontSize: 13, fontWeight: 600, background: active ? "#1f2937" : "transparent",
+    color: active ? "#f8fafc" : "#94a3b8", boxShadow: active ? "0 1px 3px rgba(0,0,0,0.4)" : "none",
   }),
-  avatar: { width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(90deg, #2563eb, #7c3aed)", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 700, fontSize: 13, cursor: "pointer" },
+  avatar: { width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg, #22c55e, #3b82f6)", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 700, fontSize: 13, cursor: "pointer" },
 };
 
 const studentTabs = [
@@ -103,7 +103,7 @@ function App() {
   // --- Admin view ---
   if (userType === "admin") {
     return (
-      <div>
+      <div style={{ background: "#0d1117", minHeight: "100vh" }}>
         <div style={navStyles.topBar}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <span style={navStyles.logo}>AI-CROS</span>
@@ -129,7 +129,7 @@ function App() {
   // --- Industry view ---
   if (userType === "industry") {
     return (
-      <div>
+      <div style={{ background: "#0d1117", minHeight: "100vh" }}>
         <div style={navStyles.topBar}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <span style={navStyles.logo}>AI-CROS</span>
@@ -155,7 +155,7 @@ function App() {
 
   // --- Student view ---
   return (
-    <div>
+    <div style={{ background: "#0d1117", minHeight: "100vh" }}>
       <div style={navStyles.topBar}>
         <div style={{ display: "flex", alignItems: "center" }}>
           <span style={navStyles.logo}>AI-CROS</span>

@@ -9,8 +9,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background:
-      "radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), transparent 35%), radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.14), transparent 35%), #f7f8fc",
+    background: "#0d1117",
     fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
     padding: "32px 20px",
     boxSizing: "border-box",
@@ -22,10 +21,10 @@ const styles = {
     minHeight: 580,
     display: "flex",
     overflow: "hidden",
-    background: "#ffffff",
+    background: "#161b22",
     borderRadius: 24,
-    border: "1px solid rgba(15, 23, 42, 0.06)",
-    boxShadow: "0 24px 70px rgba(15, 23, 42, 0.14)",
+    border: "1px solid rgba(255, 255, 255, 0.08)",
+    boxShadow: "0 24px 70px rgba(0, 0, 0, 0.5)",
   },
 
   leftPanel: {
@@ -36,8 +35,7 @@ const styles = {
     justifyContent: "space-between",
     padding: 46,
     color: "#ffffff",
-    background:
-      "linear-gradient(145deg, #8ea688 0%, #46e561 48%, #7ee281 100%)",
+    background: "linear-gradient(145deg, #1f2937 0%, #111827 50%, #0f172a 100%)",
     overflow: "hidden",
   },
 
@@ -48,7 +46,7 @@ const styles = {
     borderRadius: "50%",
     top: -110,
     right: -80,
-    background: "rgba(255,255,255,0.10)",
+    background: "rgba(34, 197, 94, 0.08)",
   },
 
   circleTwo: {
@@ -58,7 +56,7 @@ const styles = {
     borderRadius: "50%",
     bottom: -90,
     left: -60,
-    background: "rgba(255,255,255,0.08)",
+    background: "rgba(34, 197, 94, 0.05)",
   },
 
   brand: {
@@ -81,6 +79,7 @@ const styles = {
     fontSize: 22,
     fontWeight: 850,
     letterSpacing: "-0.4px",
+    color: "#f8fafc",
   },
 
   heroContent: {
@@ -96,10 +95,11 @@ const styles = {
     padding: "7px 11px",
     marginBottom: 20,
     borderRadius: 999,
-    background: "rgba(255,255,255,0.15)",
-    border: "1px solid rgba(255,255,255,0.18)",
+    background: "rgba(34, 197, 94, 0.1)",
+    border: "1px solid rgba(34, 197, 94, 0.2)",
     fontSize: 12,
     fontWeight: 650,
+    color: "#4ade80",
   },
 
   heroTitle: {
@@ -108,49 +108,20 @@ const styles = {
     lineHeight: 1.15,
     letterSpacing: "-1.2px",
     fontWeight: 850,
+    color: "#f8fafc",
   },
 
   heroDescription: {
     margin: 0,
-    color: "rgba(255,255,255,0.82)",
+    color: "#94a3b8",
     fontSize: 14.5,
     lineHeight: 1.7,
-  },
-
-  featureList: {
-    position: "relative",
-    zIndex: 1,
-    display: "flex",
-    flexDirection: "column",
-    gap: 12,
-    marginTop: 28,
-  },
-
-  featureItem: {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
-    color: "rgba(255,255,255,0.9)",
-    fontSize: 13,
-    fontWeight: 550,
-  },
-
-  checkIcon: {
-    width: 21,
-    height: 21,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexShrink: 0,
-    borderRadius: "50%",
-    background: "rgba(255,255,255,0.17)",
-    fontSize: 11,
   },
 
   leftFooter: {
     position: "relative",
     zIndex: 1,
-    color: "rgba(255,255,255,0.6)",
+    color: "#64748b",
     fontSize: 11.5,
   },
 
@@ -160,6 +131,7 @@ const styles = {
     alignItems: "center",
     padding: "48px 44px",
     boxSizing: "border-box",
+    background: "#161b22",
   },
 
   formContent: {
@@ -171,7 +143,7 @@ const styles = {
     alignItems: "center",
     gap: 10,
     marginBottom: 28,
-    color: "#1e293b",
+    color: "#f8fafc",
     fontWeight: 850,
     fontSize: 20,
   },
@@ -184,14 +156,14 @@ const styles = {
     justifyContent: "center",
     borderRadius: 12,
     color: "#ffffff",
-    background: "linear-gradient(135deg, #2563eb, #7c3aed)",
+    background: "linear-gradient(135deg, #22c55e, #16a34a)",
     fontSize: 15,
     fontWeight: 900,
   },
 
   heading: {
     margin: "0 0 7px",
-    color: "#0f172a",
+    color: "#f8fafc",
     fontSize: 27,
     fontWeight: 850,
     letterSpacing: "-0.7px",
@@ -199,7 +171,7 @@ const styles = {
 
   subheading: {
     margin: "0 0 28px",
-    color: "#64748b",
+    color: "#94a3b8",
     fontSize: 14,
     lineHeight: 1.55,
   },
@@ -207,7 +179,7 @@ const styles = {
   label: {
     display: "block",
     marginBottom: 7,
-    color: "#334155",
+    color: "#cbd5e1",
     fontSize: 12.5,
     fontWeight: 700,
   },
@@ -228,12 +200,12 @@ const styles = {
     gap: 7,
     padding: "10px 6px",
     borderRadius: 13,
-    border: active ? "1.5px solid #4f46e5" : "1px solid #e2e8f0",
+    border: active ? "1.5px solid #22c55e" : "1px solid rgba(255, 255, 255, 0.08)",
     background: active
-      ? "linear-gradient(180deg, #eef2ff, #f5f3ff)"
-      : "#ffffff",
-    color: active ? "#4338ca" : "#64748b",
-    boxShadow: active ? "0 5px 15px rgba(79, 70, 229, 0.10)" : "none",
+      ? "rgba(34, 197, 94, 0.1)"
+      : "#0d1117",
+    color: active ? "#4ade80" : "#94a3b8",
+    boxShadow: active ? "0 5px 15px rgba(34, 197, 94, 0.15)" : "none",
     cursor: "pointer",
     fontFamily: "inherit",
     fontSize: 11.5,
@@ -259,7 +231,7 @@ const styles = {
     left: 14,
     top: "50%",
     transform: "translateY(-50%)",
-    color: "#94a3b8",
+    color: "#64748b",
     fontSize: 16,
     pointerEvents: "none",
   },
@@ -269,10 +241,10 @@ const styles = {
     height: 47,
     padding: "0 44px 0 42px",
     borderRadius: 12,
-    border: "1px solid #dbe2ea",
+    border: "1px solid rgba(255, 255, 255, 0.08)",
     outline: "none",
-    background: "#fbfcfe",
-    color: "#0f172a",
+    background: "#0d1117",
+    color: "#f8fafc",
     fontFamily: "inherit",
     fontSize: 13.5,
     boxSizing: "border-box",
@@ -287,7 +259,7 @@ const styles = {
     padding: 4,
     border: "none",
     background: "transparent",
-    color: "#64748b",
+    color: "#94a3b8",
     cursor: "pointer",
     fontSize: 16,
   },
@@ -303,7 +275,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 7,
-    color: "#64748b",
+    color: "#94a3b8",
     fontSize: 12,
     cursor: "pointer",
   },
@@ -311,14 +283,14 @@ const styles = {
   checkbox: {
     width: 15,
     height: 15,
-    accentColor: "#4f46e5",
+    accentColor: "#22c55e",
   },
 
   forgotButton: {
     padding: 0,
     border: "none",
     background: "transparent",
-    color: "#4f46e5",
+    color: "#4ade80",
     fontFamily: "inherit",
     fontSize: 12,
     fontWeight: 700,
@@ -334,12 +306,12 @@ const styles = {
     gap: 8,
     border: "none",
     borderRadius: 12,
-    background: "linear-gradient(90deg, #2563eb, #6d28d9)",
+    background: "linear-gradient(90deg, #22c55e, #16a34a)",
     color: "#ffffff",
     fontFamily: "inherit",
     fontSize: 14,
     fontWeight: 750,
-    boxShadow: "0 10px 25px rgba(79, 70, 229, 0.24)",
+    boxShadow: "0 10px 25px rgba(34, 197, 94, 0.25)",
     cursor: "pointer",
     transition: "transform 0.2s ease, opacity 0.2s ease",
   },
@@ -365,16 +337,16 @@ const styles = {
     margin: "14px 0 0",
     padding: "10px 12px",
     borderRadius: 10,
-    border: "1px solid #fecaca",
-    background: "#fef2f2",
-    color: "#b91c1c",
+    border: "1px solid rgba(239, 68, 68, 0.3)",
+    background: "rgba(239, 68, 68, 0.1)",
+    color: "#f87171",
     fontSize: 12,
     lineHeight: 1.45,
   },
 
   registerText: {
     margin: "25px 0 0",
-    color: "#64748b",
+    color: "#94a3b8",
     textAlign: "center",
     fontSize: 12.5,
   },
@@ -383,7 +355,7 @@ const styles = {
     padding: 0,
     border: "none",
     background: "transparent",
-    color: "#4f46e5",
+    color: "#4ade80",
     fontFamily: "inherit",
     fontSize: 12.5,
     fontWeight: 750,
@@ -530,9 +502,9 @@ function LoginPage({
   const inputFocusStyle = (fieldName) =>
     focusedField === fieldName
       ? {
-          borderColor: "#6366f1",
-          boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.12)",
-          background: "#ffffff",
+          borderColor: "#22c55e",
+          boxShadow: "0 0 0 3px rgba(34, 197, 94, 0.15)",
+          background: "#0d1117",
         }
       : {};
 
@@ -551,8 +523,8 @@ function LoginPage({
           }
 
           .ai-cros-role-button:hover {
-            border-color: #a5b4fc !important;
-            background: #f8faff !important;
+            border-color: rgba(34, 197, 94, 0.4) !important;
+            background: rgba(34, 197, 94, 0.05) !important;
           }
 
           .ai-cros-link:hover {
