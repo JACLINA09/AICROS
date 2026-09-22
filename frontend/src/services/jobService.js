@@ -39,3 +39,12 @@ export async function getMyApplications(studentId) {
   }
   return res.json();
 }
+
+export async function getStudentCalendarEvents(studentId) {
+  const res = await fetch(`${API_BASE_URL}/jobs/calendar/${studentId}`);
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.detail || "Failed to load calendar events.");
+  }
+  return res.json();
+}

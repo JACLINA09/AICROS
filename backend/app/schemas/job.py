@@ -19,6 +19,7 @@ class JobOut(BaseModel):
     compatibility_score: Optional[int] = None
     matched_skills: List[str] = []
     missing_skills: List[str] = []
+    simulation_completed: bool = False
 
     class Config:
         from_attributes = True

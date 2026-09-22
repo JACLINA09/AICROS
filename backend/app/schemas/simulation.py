@@ -4,11 +4,14 @@ from typing import Optional, List
 
 class SimulationTaskOut(BaseModel):
     task_id: int
+    job_id: int
+    job_title: Optional[str] = None
     task_title: str
     task_scenario: Optional[str]
     instructions: Optional[str]
     question_type: str
     time_limit_minutes: Optional[int]
+    task_level: Optional[str] = None
 
     class Config:
         from_attributes = True

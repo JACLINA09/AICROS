@@ -1,55 +1,60 @@
-import { useState } from "react";
-import { startAttempt, submitAnswer, finishAttempt } from "../../services/simulationService";
+import { useState, useEffect } from "react";
+import { getPublishedTasks, startAttempt, submitAnswer, finishAttempt } from "../../services/simulationService";
 
 const styles = {
-  page: { padding: "32px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#0d1117", minHeight: "100vh" },
-  title: { fontSize: 24, fontWeight: 800, margin: "0 0 4px", color: "#f8fafc" },
-  subtitle: { fontSize: 14, color: "#94a3b8", margin: "0 0 24px" },
+  page: { padding: "32px 40px", fontFamily: "'Trebuchet MS', 'Segoe UI', sans-serif", background: "#eaf1f7", minHeight: "100vh" },
+  title: { fontSize: 24, fontWeight: 850, margin: "0 0 4px", color: "#17324d" },
+  subtitle: { fontSize: 14, color: "#47647d", margin: "0 0 24px" },
 
-  card: { background: "#161b22", borderRadius: 16, padding: 24, marginBottom: 16, border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)" },
+  card: { background: "#f5f1e6", borderRadius: 10, padding: 24, marginBottom: 16, border: "1px solid #c7d7e4", boxShadow: "0 5px 14px rgba(23,50,77,0.08)" },
   startBtn: {
     padding: "13px 22px", borderRadius: 10, border: "none",
-    background: "#22c55e", color: "white",
+    background: "#1f5f8b", color: "white",
     fontSize: 14.5, fontWeight: 700, cursor: "pointer",
   },
 
-  progressText: { fontSize: 12.5, color: "#94a3b8", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: 0.5 },
-  taskTitle: { fontSize: 18, fontWeight: 800, margin: "0 0 8px", color: "#f8fafc" },
-  scenario: { fontSize: 13.5, color: "#cbd5e1", lineHeight: 1.6, margin: "0 0 14px", background: "#0d1117", padding: 14, borderRadius: 10, border: "1px solid rgba(255, 255, 255, 0.05)" },
-  instructions: { fontSize: 14, fontWeight: 600, margin: "0 0 14px", color: "#f8fafc" },
+  progressText: { fontSize: 12.5, color: "#557086", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: 0.5 },
+  taskTitle: { fontSize: 18, fontWeight: 800, margin: "0 0 8px", color: "#17324d" },
+  scenario: { fontSize: 13.5, color: "#47647d", lineHeight: 1.6, margin: "0 0 14px", background: "#dce9f2", padding: 14, borderRadius: 10, border: "1px solid #c7d7e4" },
+  instructions: { fontSize: 14, fontWeight: 600, margin: "0 0 14px", color: "#17324d" },
 
   textarea: {
     width: "100%", minHeight: 100, padding: "12px 14px", borderRadius: 10,
-    border: "1.5px solid rgba(255, 255, 255, 0.12)", background: "#0d1117", color: "#f8fafc", fontSize: 13.5, fontFamily: "inherit",
+    border: "1.5px solid #b8cddd", background: "#ffffff", color: "#17324d", fontSize: 13.5, fontFamily: "inherit",
     resize: "vertical", boxSizing: "border-box",
   },
   submitBtn: {
     marginTop: 14, padding: "11px 20px", borderRadius: 10, border: "none",
-    background: "#22c55e", color: "white",
+    background: "#1f5f8b", color: "white",
     fontSize: 13.5, fontWeight: 700, cursor: "pointer",
   },
   feedbackBox: (score) => ({
     marginTop: 14, padding: "12px 14px", borderRadius: 10,
-    background: score >= 70 ? "rgba(34, 197, 94, 0.1)" : score >= 40 ? "rgba(234, 179, 8, 0.1)" : "rgba(239, 68, 68, 0.1)",
-    color: score >= 70 ? "#4ade80" : score >= 40 ? "#facc15" : "#f87171",
-    border: `1px solid ${score >= 70 ? "rgba(34, 197, 94, 0.2)" : score >= 40 ? "rgba(234, 179, 8, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
+    background: score >= 70 ? "#e4eee7" : score >= 40 ? "#eee3bf" : "#f3e5e1",
+    color: score >= 70 ? "#466b54" : score >= 40 ? "#7a5a08" : "#9b4d57",
+    border: `1px solid ${score >= 70 ? "#b9d2c0" : score >= 40 ? "#d9c98e" : "#e1c2bb"}`,
     fontSize: 13,
   }),
   nextBtn: {
-    marginTop: 14, padding: "11px 20px", borderRadius: 10, border: "1px solid rgba(255, 255, 255, 0.12)",
-    background: "#161b22", fontSize: 13.5, fontWeight: 700, cursor: "pointer", color: "#cbd5e1",
+    marginTop: 14, padding: "11px 20px", borderRadius: 10, border: "1px solid #b8cddd",
+    background: "#eaf1f7", fontSize: 13.5, fontWeight: 700, cursor: "pointer", color: "#234e70",
   },
 
-  resultScore: { fontSize: 48, fontWeight: 800, margin: "0 0 6px", textAlign: "center", color: "#f8fafc" },
-  resultLabel: { fontSize: 13, color: "#94a3b8", textAlign: "center", margin: "0 0 20px", textTransform: "uppercase", letterSpacing: 0.5 },
-  feedbackRow: { display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 0", borderBottom: "1px solid rgba(255, 255, 255, 0.06)" },
-  feedbackScore: { fontSize: 13, fontWeight: 700, minWidth: 40, color: "#4ade80" },
+  resultScore: { fontSize: 48, fontWeight: 800, margin: "0 0 6px", textAlign: "center", color: "#17324d" },
+  resultLabel: { fontSize: 13, color: "#557086", textAlign: "center", margin: "0 0 20px", textTransform: "uppercase", letterSpacing: 0.5 },
+  feedbackRow: { display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 0", borderBottom: "1px solid #d6e1ea" },
+  feedbackScore: { fontSize: 13, fontWeight: 700, minWidth: 40, color: "#2f78a8" },
 
-  error: { color: "#f87171", fontSize: 13, marginTop: 10, textAlign: "center" },
+  error: { color: "#bc6b5d", fontSize: 13, marginTop: 10, textAlign: "center" },
+  taskGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))", gap: 14 },
+  taskCard: { background: "#ffffff", border: "1px solid #c7d7e4", borderRadius: 9, padding: 18 },
+  taskMeta: { display: "flex", justifyContent: "space-between", gap: 8, color: "#557086", fontSize: 11, fontWeight: 750, textTransform: "uppercase", letterSpacing: 0.4 },
+  taskDescription: { color: "#47647d", fontSize: 13, lineHeight: 1.55, margin: "10px 0 14px" },
+  browseButton: { padding: "9px 14px", borderRadius: 8, border: "none", background: "#1f5f8b", color: "#ffffff", fontWeight: 750, cursor: "pointer" },
 };
 
-function CareerSimulation({ student, jobId = 1 }) {
-  const [phase, setPhase] = useState("intro"); // intro | running | finished
+function CareerSimulation({ student, jobId, onStartSimulation }) {
+  const [phase, setPhase] = useState(jobId ? "intro" : "browse"); // browse | intro | running | finished
   const [attemptId, setAttemptId] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -58,6 +63,16 @@ function CareerSimulation({ student, jobId = 1 }) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [availableTasks, setAvailableTasks] = useState([]);
+  const [catalogLoading, setCatalogLoading] = useState(!jobId);
+
+  useEffect(() => {
+    if (jobId) return;
+    getPublishedTasks()
+      .then(setAvailableTasks)
+      .catch((err) => setError(err.message))
+      .finally(() => setCatalogLoading(false));
+  }, [jobId]);
 
   const handleStart = async () => {
     setError("");
@@ -74,6 +89,12 @@ function CareerSimulation({ student, jobId = 1 }) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (jobId) {
+      handleStart();
+    }
+  }, [jobId, student.student_id]);
 
   const handleSubmit = async () => {
     if (!answer.trim()) return;
@@ -111,26 +132,62 @@ function CareerSimulation({ student, jobId = 1 }) {
     }
   };
 
+  if (phase === "browse") {
+    const groupedTasks = availableTasks.reduce((groups, task) => {
+      const group = groups[task.job_id] || { jobTitle: task.job_title, tasks: [] };
+      group.tasks.push(task);
+      groups[task.job_id] = group;
+      return groups;
+    }, {});
+
+    return (
+      <div style={styles.page}>
+        <h1 style={styles.title}>Simulation practice</h1>
+        <p style={styles.subtitle}>Explore published job simulations and practise any role for experience.</p>
+        {catalogLoading && <div style={styles.card}><p style={styles.subtitle}>Loading available simulations...</p></div>}
+        {!catalogLoading && error && <div style={styles.card}><p style={styles.error}>{error}</p></div>}
+        {!catalogLoading && !error && availableTasks.length === 0 && <div style={styles.card}><p style={styles.subtitle}>No published simulation tasks are available yet.</p></div>}
+        <div style={styles.taskGrid}>
+          {Object.entries(groupedTasks).map(([simulationJobId, group]) => (
+            <div key={simulationJobId} style={styles.card}>
+              <p style={styles.taskTitle}>{group.jobTitle}</p>
+              <p style={styles.subtitle}>{group.tasks.length} practice task{group.tasks.length === 1 ? "" : "s"}</p>
+              <div style={styles.taskGrid}>
+                {group.tasks.map((task) => (
+                  <article key={task.task_id} style={styles.taskCard}>
+                    <div style={styles.taskMeta}><span>{task.question_type}</span><span>{task.time_limit_minutes || 10} min</span></div>
+                    <p style={{ ...styles.taskTitle, fontSize: 15, marginTop: 10 }}>{task.task_title}</p>
+                    <p style={styles.taskDescription}>{task.task_scenario || task.instructions || "Practise a realistic workplace scenario."}</p>
+                    <button style={styles.browseButton} onClick={() => onStartSimulation(Number(simulationJobId))}>Start this simulation</button>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   if (phase === "intro") {
     return (
       <div style={styles.page}>
-        <h1 style={styles.title}>Career Simulation</h1>
-        <p style={styles.subtitle}>Practice with real scenarios and get scored on objective and open-ended questions.</p>
+        <h1 style={styles.title}>Job Simulation</h1>
+        <p style={styles.subtitle}>Loading the published simulation tasks for your selected job.</p>
         <div style={styles.card}>
-          <p style={{ fontSize: 14, color: "#cbd5e1", marginBottom: 18 }}>
-            This simulation contains a mix of multiple-choice and open-ended questions
-            related to the job you're targeting. Your answers are scored automatically.
-          </p>
-          <button style={styles.startBtn} onClick={handleStart} disabled={loading}>
-            {loading ? "Starting..." : "Start assessment →"}
-          </button>
+          {!error && <p style={{ fontSize: 14, color: "#47647d", marginBottom: 0 }}>Preparing job-specific tasks...</p>}
           {error && (
-          <p style={styles.error}>
-          {error.includes("No simulation tasks") 
-             ? "This company hasn't published a simulation for this role yet. Check back later, or explore other jobs."
-             : error}
-         </p>
-)}
+            <>
+              <p style={styles.error}>
+                {error.includes("No simulation tasks")
+                  ? "This company hasn't published a simulation for this role yet. Check back later, or explore other jobs."
+                  : error}
+              </p>
+              <button style={styles.startBtn} onClick={handleStart} disabled={loading}>
+                {loading ? "Loading..." : "Try again"}
+              </button>
+            </>
+          )}
         </div>
       </div>
     );
@@ -184,11 +241,11 @@ function CareerSimulation({ student, jobId = 1 }) {
         <p style={styles.resultScore}>{result.simulation_score}</p>
         <p style={styles.resultLabel}>Overall simulation score</p>
 
-        <p style={{ fontSize: 14, fontWeight: 700, marginBottom: 6, color: "#f8fafc" }}>Mission-by-mission feedback</p>
+        <p style={{ fontSize: 14, fontWeight: 700, marginBottom: 6, color: "#17324d" }}>Mission-by-mission feedback</p>
         {result.submissions.map((s, i) => (
           <div key={i} style={styles.feedbackRow}>
             <span style={styles.feedbackScore}>{s.task_score}/100</span>
-            <span style={{ fontSize: 13, color: "#cbd5e1" }}>{s.ai_feedback}</span>
+            <span style={{ fontSize: 13, color: "#47647d" }}>{s.ai_feedback}</span>
           </div>
         ))}
       </div>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { login } from "../services/authService";
-import { loginIndustry } from "../services/industryService";
-import { loginAdmin } from "../services/adminService";
+import ForgotPasswordPage from "./ForgotPasswordPage"; // Linked component import[cite: 3]
 
 const styles = {
   page: {
@@ -9,8 +8,8 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "#0d1117",
-    fontFamily: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+    background: "#eaf1f7",
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
     padding: "32px 20px",
     boxSizing: "border-box",
   },
@@ -21,10 +20,10 @@ const styles = {
     minHeight: 580,
     display: "flex",
     overflow: "hidden",
-    background: "#161b22",
+    background: "#f5f1e6",
     borderRadius: 24,
-    border: "1px solid rgba(255, 255, 255, 0.08)",
-    boxShadow: "0 24px 70px rgba(0, 0, 0, 0.5)",
+    border: "1px solid #e7e5e4",
+    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.06)",
   },
 
   leftPanel: {
@@ -35,28 +34,8 @@ const styles = {
     justifyContent: "space-between",
     padding: 46,
     color: "#ffffff",
-    background: "linear-gradient(145deg, #1f2937 0%, #111827 50%, #0f172a 100%)",
+    background: "#1f5f8b",
     overflow: "hidden",
-  },
-
-  circleOne: {
-    position: "absolute",
-    width: 260,
-    height: 260,
-    borderRadius: "50%",
-    top: -110,
-    right: -80,
-    background: "rgba(34, 197, 94, 0.08)",
-  },
-
-  circleTwo: {
-    position: "absolute",
-    width: 190,
-    height: 190,
-    borderRadius: "50%",
-    bottom: -90,
-    left: -60,
-    background: "rgba(34, 197, 94, 0.05)",
   },
 
   brand: {
@@ -68,18 +47,29 @@ const styles = {
   },
 
   logoMark: {
-    width: 42,
-    height: 42,
+    width: 38,
+    height: 38,
     display: "block",
-    borderRadius: 13,
+    borderRadius: 8,
     objectFit: "contain",
+  },
+
+  brandButton: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    border: "none",
+    background: "transparent",
+    padding: 0,
+    color: "inherit",
+    cursor: "pointer",
   },
 
   brandName: {
     fontSize: 22,
     fontWeight: 850,
     letterSpacing: "-0.4px",
-    color: "#f8fafc",
+    color: "#ffffff",
   },
 
   heroContent: {
@@ -92,46 +82,46 @@ const styles = {
     display: "inline-flex",
     alignItems: "center",
     gap: 7,
-    padding: "7px 11px",
+    padding: "7px 12px",
     marginBottom: 20,
     borderRadius: 999,
-    background: "rgba(34, 197, 94, 0.1)",
-    border: "1px solid rgba(34, 197, 94, 0.2)",
+    background: "rgba(56, 189, 248, 0.15)",
+    border: "1px solid rgba(56, 189, 248, 0.3)",
     fontSize: 12,
-    fontWeight: 650,
-    color: "#4ade80",
+    fontWeight: 700,
+    color: "#38bdf8",
   },
 
   heroTitle: {
     margin: "0 0 16px",
-    fontSize: 37,
+    fontSize: 34,
     lineHeight: 1.15,
-    letterSpacing: "-1.2px",
+    letterSpacing: "-1px",
     fontWeight: 850,
-    color: "#f8fafc",
+    color: "#ffffff",
   },
 
   heroDescription: {
     margin: 0,
-    color: "#94a3b8",
+    color: "#cbd5e1",
     fontSize: 14.5,
-    lineHeight: 1.7,
+    lineHeight: 1.6,
   },
 
   leftFooter: {
     position: "relative",
     zIndex: 1,
-    color: "#64748b",
-    fontSize: 11.5,
+    color: "#94a3b8",
+    fontSize: 12,
   },
 
   formPanel: {
-    width: 430,
+    width: 440,
     display: "flex",
     alignItems: "center",
     padding: "48px 44px",
     boxSizing: "border-box",
-    background: "#161b22",
+    background: "#ffffff",
   },
 
   formContent: {
@@ -143,79 +133,42 @@ const styles = {
     alignItems: "center",
     gap: 10,
     marginBottom: 28,
-    color: "#f8fafc",
+    color: "#0f172a",
     fontWeight: 850,
     fontSize: 20,
   },
 
   mobileLogoMark: {
-    width: 38,
-    height: 38,
+    width: 36,
+    height: 36,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 12,
-    color: "#ffffff",
-    background: "linear-gradient(135deg, #22c55e, #16a34a)",
-    fontSize: 15,
-    fontWeight: 900,
+    borderRadius: 8,
+    objectFit: "contain",
   },
 
   heading: {
-    margin: "0 0 7px",
-    color: "#f8fafc",
-    fontSize: 27,
+    margin: "0 0 6px",
+    color: "#0f172a",
+    fontSize: 26,
     fontWeight: 850,
-    letterSpacing: "-0.7px",
+    letterSpacing: "-0.6px",
   },
 
   subheading: {
-    margin: "0 0 28px",
-    color: "#94a3b8",
-    fontSize: 14,
-    lineHeight: 1.55,
+    margin: "0 0 24px",
+    color: "#64748b",
+    fontSize: 13.5,
+    lineHeight: 1.5,
   },
 
   label: {
     display: "block",
-    marginBottom: 7,
-    color: "#cbd5e1",
+    marginBottom: 6,
+    color: "#334155",
     fontSize: 12.5,
-    fontWeight: 700,
-  },
-
-  roleGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gap: 8,
-    marginBottom: 22,
-  },
-
-  roleButton: (active) => ({
-    minHeight: 72,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 7,
-    padding: "10px 6px",
-    borderRadius: 13,
-    border: active ? "1.5px solid #22c55e" : "1px solid rgba(255, 255, 255, 0.08)",
-    background: active
-      ? "rgba(34, 197, 94, 0.1)"
-      : "#0d1117",
-    color: active ? "#4ade80" : "#94a3b8",
-    boxShadow: active ? "0 5px 15px rgba(34, 197, 94, 0.15)" : "none",
-    cursor: "pointer",
-    fontFamily: "inherit",
-    fontSize: 11.5,
-    fontWeight: 700,
-    transition: "all 0.2s ease",
-  }),
-
-  roleIcon: {
-    fontSize: 20,
-    lineHeight: 1,
+    fontWeight: 750,
   },
 
   fieldGroup: {
@@ -231,20 +184,20 @@ const styles = {
     left: 14,
     top: "50%",
     transform: "translateY(-50%)",
-    color: "#64748b",
-    fontSize: 16,
+    color: "#94a3b8",
+    fontSize: 15,
     pointerEvents: "none",
   },
 
   input: {
     width: "100%",
-    height: 47,
+    height: 46,
     padding: "0 44px 0 42px",
-    borderRadius: 12,
-    border: "1px solid rgba(255, 255, 255, 0.08)",
+    borderRadius: 10,
+    border: "1px solid #cbd5e1",
     outline: "none",
-    background: "#0d1117",
-    color: "#f8fafc",
+    background: "#fafaf9",
+    color: "#0f172a",
     fontFamily: "inherit",
     fontSize: 13.5,
     boxSizing: "border-box",
@@ -259,9 +212,9 @@ const styles = {
     padding: 4,
     border: "none",
     background: "transparent",
-    color: "#94a3b8",
+    color: "#64748b",
     cursor: "pointer",
-    fontSize: 16,
+    fontSize: 15,
   },
 
   optionsRow: {
@@ -275,25 +228,26 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 7,
-    color: "#94a3b8",
+    color: "#64748b",
     fontSize: 12,
     cursor: "pointer",
+    fontWeight: 600,
   },
 
   checkbox: {
     width: 15,
     height: 15,
-    accentColor: "#22c55e",
+    accentColor: "#0284c7",
   },
 
   forgotButton: {
     padding: 0,
     border: "none",
     background: "transparent",
-    color: "#4ade80",
+    color: "#0284c7",
     fontFamily: "inherit",
     fontSize: 12,
-    fontWeight: 700,
+    fontWeight: 750,
     cursor: "pointer",
   },
 
@@ -305,13 +259,13 @@ const styles = {
     justifyContent: "center",
     gap: 8,
     border: "none",
-    borderRadius: 12,
-    background: "linear-gradient(90deg, #22c55e, #16a34a)",
+    borderRadius: 10,
+    background: "#0284c7",
     color: "#ffffff",
     fontFamily: "inherit",
     fontSize: 14,
     fontWeight: 750,
-    boxShadow: "0 10px 25px rgba(34, 197, 94, 0.25)",
+    boxShadow: "0 4px 15px rgba(2, 132, 199, 0.25)",
     cursor: "pointer",
     transition: "transform 0.2s ease, opacity 0.2s ease",
   },
@@ -336,17 +290,17 @@ const styles = {
     gap: 8,
     margin: "14px 0 0",
     padding: "10px 12px",
-    borderRadius: 10,
+    borderRadius: 8,
     border: "1px solid rgba(239, 68, 68, 0.3)",
-    background: "rgba(239, 68, 68, 0.1)",
-    color: "#f87171",
+    background: "rgba(239, 68, 68, 0.08)",
+    color: "#dc2626",
     fontSize: 12,
     lineHeight: 1.45,
   },
 
   registerText: {
-    margin: "25px 0 0",
-    color: "#94a3b8",
+    margin: "22px 0 0",
+    color: "#64748b",
     textAlign: "center",
     fontSize: 12.5,
   },
@@ -355,7 +309,7 @@ const styles = {
     padding: 0,
     border: "none",
     background: "transparent",
-    color: "#4ade80",
+    color: "#0284c7",
     fontFamily: "inherit",
     fontSize: 12.5,
     fontWeight: 750,
@@ -363,66 +317,31 @@ const styles = {
   },
 };
 
-const roleDetails = {
-  student: {
-    label: "Student",
-    icon: "🎓",
-    placeholder: "student@umpsa.edu.my",
-  },
-  industry: {
-    label: "Industry",
-    icon: "🏢",
-    placeholder: "company@email.com",
-  },
-  admin: {
-    label: "Admin",
-    icon: "🛡️",
-    placeholder: "admin@umpsa.edu.my",
-  },
-};
-
 function LoginPage({
   onLoginSuccess,
   onRegisterClick,
-  onIndustryRegisterClick,
-  onForgotPasswordClick,
+  onHomeClick,
 }) {
-  const [role, setRole] = useState("student");
-  const [credentials, setCredentials] = useState({
-    student: { email: "", password: "" },
-    industry: { email: "", password: "" },
-    admin: { email: "", password: "" },
-  });
+  // State to manage whether we show the login form or the forgot password page[cite: 3]
+  const [currentView, setCurrentView] = useState("login");
+
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [focusedField, setFocusedField] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const currentCredentials = credentials[role];
-
   const updateCredential = (field, value) => {
-    setCredentials((previous) => ({
-      ...previous,
-      [role]: {
-        ...previous[role],
-        [field]: value,
-      },
-    }));
+    setCredentials((previous) => ({ ...previous, [field]: value }));
 
     if (error) {
       setError("");
     }
   };
 
-  const handleRoleChange = (selectedRole) => {
-    setRole(selectedRole);
-    setError("");
-    setShowPassword(false);
-  };
-
   const validateForm = () => {
-    const trimmedEmail = currentCredentials.email.trim();
+    const trimmedEmail = credentials.email.trim();
 
     if (!trimmedEmail) {
       return "Please enter your email address.";
@@ -434,7 +353,7 @@ function LoginPage({
       return "Please enter a valid email address.";
     }
 
-    if (!currentCredentials.password) {
+    if (!credentials.password) {
       return "Please enter your password.";
     }
 
@@ -456,29 +375,21 @@ function LoginPage({
     setError("");
     setLoading(true);
 
-    const email = currentCredentials.email.trim();
-    const password = currentCredentials.password;
+    const email = credentials.email.trim();
+    const password = credentials.password;
 
     try {
-      let account;
-
-      if (role === "student") {
-        account = await login(email, password);
-      } else if (role === "industry") {
-        account = await loginIndustry(email, password);
-      } else {
-        account = await loginAdmin(email, password);
-      }
+      const account = await login(email, password);
 
       if (rememberMe) {
-        localStorage.setItem("aiCrosRememberedRole", role);
+        localStorage.setItem("aiCrosRememberedRole", "student");
         localStorage.setItem("aiCrosRememberedEmail", email);
       } else {
         localStorage.removeItem("aiCrosRememberedRole");
         localStorage.removeItem("aiCrosRememberedEmail");
       }
 
-      onLoginSuccess(account, role);
+      onLoginSuccess(account, "student");
     } catch (err) {
       setError(
         err?.response?.data?.detail ||
@@ -491,22 +402,27 @@ function LoginPage({
   };
 
   const handleRegister = () => {
-    if (role === "industry") {
-      onIndustryRegisterClick?.();
-      return;
-    }
-
     onRegisterClick?.();
   };
 
   const inputFocusStyle = (fieldName) =>
     focusedField === fieldName
       ? {
-          borderColor: "#22c55e",
-          boxShadow: "0 0 0 3px rgba(34, 197, 94, 0.15)",
-          background: "#0d1117",
+          borderColor: "#0284c7",
+          boxShadow: "0 0 0 3px rgba(2, 132, 199, 0.12)",
+          background: "#ffffff",
         }
       : {};
+
+  // Conditionally render the ForgotPasswordPage if requested[cite: 3]
+  if (currentView === "forgotPassword") {
+    return (
+      <ForgotPasswordPage
+        initialRole="student"
+        onBackToLogin={() => setCurrentView("login")}
+      />
+    );
+  }
 
   return (
     <>
@@ -520,11 +436,6 @@ function LoginPage({
 
           .ai-cros-login-button:hover:not(:disabled) {
             transform: translateY(-1px);
-          }
-
-          .ai-cros-role-button:hover {
-            border-color: rgba(34, 197, 94, 0.4) !important;
-            background: rgba(34, 197, 94, 0.05) !important;
           }
 
           .ai-cros-link:hover {
@@ -552,40 +463,25 @@ function LoginPage({
               display: flex !important;
             }
           }
-
-          @media (max-width: 420px) {
-            .ai-cros-page {
-              padding: 16px !important;
-            }
-
-            .ai-cros-form-panel {
-              padding: 30px 20px !important;
-            }
-
-            .ai-cros-role-grid {
-              gap: 6px !important;
-            }
-          }
         `}
       </style>
 
-      <main className="ai-cros-page" style={styles.page}>
+      <main style={styles.page}>
         <section
           className="ai-cros-login-container"
           style={styles.container}
           aria-label="AI-CROS login"
         >
-          <aside className="ai-cros-left-panel" style={styles.leftPanel}>
-            <div style={styles.circleOne} />
-            <div style={styles.circleTwo} />
-
+          <aside style={styles.leftPanel}>
             <div style={styles.brand}>
-              <img
-                src="/ai-cros-logo.png"
-                alt="AI-CROS logo"
-                style={styles.logoMark}
-              />
-              <span style={styles.brandName}>AI-CROS</span>
+              <button type="button" style={styles.brandButton} onClick={onHomeClick} title="Back to homepage">
+                <img
+                  src="/ai-cros-logo.png"
+                  alt="AI-CROS logo"
+                  style={styles.logoMark}
+                />
+                <span style={styles.brandName}>AI-CROS</span>
+              </button>
             </div>
 
             <div style={styles.heroContent}>
@@ -612,43 +508,18 @@ function LoginPage({
           <div className="ai-cros-form-panel" style={styles.formPanel}>
             <div style={styles.formContent}>
               <div className="ai-cros-mobile-logo" style={styles.mobileLogo}>
-                <div style={styles.mobileLogoMark}>AI</div>
+                <img
+                  src="/ai-cros-logo.png"
+                  alt="AI-CROS logo"
+                  style={styles.mobileLogoMark}
+                />
                 AI-CROS
               </div>
 
               <h2 style={styles.heading}>Welcome back</h2>
-              <p style={styles.subheading}>
-                Select your account type and enter your login details.
-              </p>
+              <p style={styles.subheading}>Enter your student login details.</p>
 
               <form onSubmit={handleLogin} noValidate>
-                <label style={styles.label}>Log in as</label>
-
-                <div
-                  className="ai-cros-role-grid"
-                  style={styles.roleGrid}
-                  role="group"
-                  aria-label="Select account type"
-                >
-                  {Object.entries(roleDetails).map(([roleKey, details]) => {
-                    const isActive = role === roleKey;
-
-                    return (
-                      <button
-                        key={roleKey}
-                        className="ai-cros-role-button"
-                        type="button"
-                        onClick={() => handleRoleChange(roleKey)}
-                        style={styles.roleButton(isActive)}
-                        aria-pressed={isActive}
-                      >
-                        <span style={styles.roleIcon}>{details.icon}</span>
-                        <span>{details.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-
                 <div style={styles.fieldGroup}>
                   <label htmlFor="login-email" style={styles.label}>
                     Email address
@@ -661,13 +532,13 @@ function LoginPage({
                       id="login-email"
                       type="email"
                       autoComplete="email"
-                      value={currentCredentials.email}
+                      value={credentials.email}
                       onChange={(event) =>
                         updateCredential("email", event.target.value)
                       }
                       onFocus={() => setFocusedField("email")}
                       onBlur={() => setFocusedField("")}
-                      placeholder={roleDetails[role].placeholder}
+                      placeholder="student@umpsa.edu.my"
                       style={{
                         ...styles.input,
                         ...inputFocusStyle("email"),
@@ -689,7 +560,7 @@ function LoginPage({
                       id="login-password"
                       type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
-                      value={currentCredentials.password}
+                      value={credentials.password}
                       onChange={(event) =>
                         updateCredential("password", event.target.value)
                       }
@@ -733,7 +604,8 @@ function LoginPage({
                     className="ai-cros-link"
                     type="button"
                     style={styles.forgotButton}
-                    onClick={onForgotPasswordClick}
+                    // Trigger switching views to the ForgotPasswordPage[cite: 3]
+                    onClick={() => setCurrentView("forgotPassword")}
                   >
                     Forgot password?
                   </button>
@@ -769,27 +641,17 @@ function LoginPage({
                 )}
               </form>
 
-              {role !== "admin" && (
-                <p style={styles.registerText}>
-                  {role === "industry"
-                    ? "New industry partner?"
-                    : "Don't have an account?"}{" "}
-                  <button
-                    className="ai-cros-link"
-                    type="button"
-                    onClick={handleRegister}
-                    style={styles.registerButton}
-                  >
-                    Create an account
-                  </button>
-                </p>
-              )}
-
-              {role === "admin" && (
-                <p style={styles.registerText}>
-                  Admin accounts are managed by the system administrator.
-                </p>
-              )}
+              <p style={styles.registerText}>
+                Don&apos;t have an account?{" "}
+                <button
+                  className="ai-cros-link"
+                  type="button"
+                  onClick={handleRegister}
+                  style={styles.registerButton}
+                >
+                  Create an account
+                </button>
+              </p>
             </div>
           </div>
         </section>

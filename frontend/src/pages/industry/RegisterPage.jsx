@@ -14,7 +14,7 @@ const styles = {
   link: { color: "#2563eb", fontWeight: 600, cursor: "pointer" },
 };
 
-function IndustryRegisterPage({ onBackToLogin }) {
+function IndustryRegisterPage({ onBackToLogin, onHomeClick }) {
   const [form, setForm] = useState({ company_name: "", contact_person: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -42,7 +42,7 @@ function IndustryRegisterPage({ onBackToLogin }) {
   return (
     <div style={styles.page}>
       <div style={{ width: 400 }}>
-        <div style={styles.logo}>AI-CROS</div>
+        <button type="button" onClick={onHomeClick} title="Back to homepage" style={{ ...styles.logo, border: "none", background: "transparent", cursor: "pointer", width: "100%" }}>AI-CROS</button>
         <div style={styles.card}>
           <h2 style={{ fontSize: 19, fontWeight: 800, margin: "0 0 4px" }}>Register your company</h2>
           <p style={{ fontSize: 13.5, color: "#666", margin: "0 0 18px" }}>Post jobs and review student applicants.</p>

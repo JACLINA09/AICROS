@@ -2,45 +2,50 @@ import { useState, useEffect } from "react";
 import { getJobs } from "../../services/jobService";
 
 const styles = {
-  page: { padding: "32px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#0d1117", minHeight: "100vh" },
-  title: { fontSize: 24, fontWeight: 800, margin: "0 0 4px", color: "#f8fafc" },
-  subtitle: { fontSize: 14, color: "#94a3b8", margin: "0 0 24px" },
-  loadingText: { textAlign: "center", color: "#94a3b8", padding: 40 },
-  error: { color: "#f87171", fontSize: 13, textAlign: "center", padding: 20 },
+  page: { padding: "32px 40px", fontFamily: "'Trebuchet MS', 'Segoe UI', sans-serif", background: "#eaf1f7", minHeight: "100vh" },
+  title: { fontSize: 24, fontWeight: 850, margin: "0 0 4px", color: "#17324d" },
+  subtitle: { fontSize: 14, color: "#47647d", margin: "0 0 24px" },
+  loadingText: { textAlign: "center", color: "#557086", padding: 40 },
+  error: { color: "#bc6b5d", fontSize: 13, textAlign: "center", padding: 20 },
 
   grid: { display: "grid", gridTemplateColumns: "1fr", gap: 14 },
   card: {
-    background: "#161b22", borderRadius: 16, padding: 22,
-    border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.4)", display: "flex", justifyContent: "space-between", gap: 20,
+    background: "#f5f1e6", borderRadius: 10, padding: 22,
+    border: "1px solid #c7d7e4", boxShadow: "0 5px 14px rgba(23,50,77,0.08)", display: "flex", justifyContent: "space-between", gap: 20,
   },
-  jobTitle: { fontSize: 17, fontWeight: 700, margin: "0 0 4px", color: "#f8fafc" },
-  jobMeta: { fontSize: 13, color: "#94a3b8", margin: "0 0 12px" },
-  jobDesc: { fontSize: 13.5, color: "#cbd5e1", margin: "0 0 14px", lineHeight: 1.6, maxWidth: 560 },
+  jobTitle: { fontSize: 17, fontWeight: 700, margin: "0 0 4px", color: "#17324d" },
+  jobMeta: { fontSize: 13, color: "#557086", margin: "0 0 12px" },
+  jobDesc: { fontSize: 13.5, color: "#47647d", margin: "0 0 14px", lineHeight: 1.6, maxWidth: 560 },
 
   skillsRow: { display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 4 },
   skillChipMatched: {
-    background: "rgba(34, 197, 94, 0.1)", border: "1px solid rgba(34, 197, 94, 0.2)", color: "#4ade80",
+    background: "#dce9f2", border: "1px solid #b8cddd", color: "#1f5f8b",
     fontSize: 11.5, fontWeight: 600, padding: "4px 10px", borderRadius: 8,
   },
   skillChipMissing: {
-    background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.2)", color: "#f87171",
+    background: "#f3e5e1", border: "1px solid #e1c2bb", color: "#9b4d57",
     fontSize: 11.5, fontWeight: 600, padding: "4px 10px", borderRadius: 8,
   },
 
   compatBox: { textAlign: "center", flexShrink: 0, width: 110 },
   compatScore: (score) => ({
     fontSize: 30, fontWeight: 800, margin: 0,
-    color: score >= 70 ? "#4ade80" : score >= 40 ? "#facc15" : "#f87171",
+    color: score >= 70 ? "#2f78a8" : score >= 40 ? "#b5964a" : "#bc6b5d",
   }),
-  compatLabel: { fontSize: 11, color: "#94a3b8", margin: "2px 0 12px", textTransform: "uppercase", letterSpacing: 0.5 },
+  compatLabel: { fontSize: 11, color: "#557086", margin: "2px 0 12px", textTransform: "uppercase", letterSpacing: 0.5 },
   viewBtn: {
     padding: "8px 16px", borderRadius: 8, border: "none",
-    background: "#22c55e", color: "white",
+    background: "#1f5f8b", color: "white",
     fontSize: 12.5, fontWeight: 600, cursor: "pointer",
+  },
+  simulationBtn: {
+    padding: "8px 16px", borderRadius: 8, border: "1px solid #1f5f8b",
+    background: "#dce9f2", color: "#1f5f8b",
+    fontSize: 12.5, fontWeight: 700, cursor: "pointer", marginTop: 8,
   },
 };
 
-function CareerOpportunities({ student, onSelectJob }) {
+function CareerOpportunities({ student, onSelectJob, onStartSimulation }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -92,6 +97,9 @@ function CareerOpportunities({ student, onSelectJob }) {
               <p style={styles.compatLabel}>Match</p>
               <button style={styles.viewBtn} onClick={() => onSelectJob(job.job_id)}>
                 View details
+              </button>
+              <button style={styles.simulationBtn} onClick={() => onStartSimulation(job.job_id)}>
+                Start Simulation
               </button>
             </div>
           </div>

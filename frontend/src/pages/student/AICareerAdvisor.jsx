@@ -2,43 +2,43 @@ import { useState, useRef, useEffect } from "react";
 import { sendAgentMessage } from "../../services/agentService";
 
 const styles = {
-  page: { padding: "28px 40px", fontFamily: "'Inter', system-ui, sans-serif", background: "#FAFAF9", minHeight: "100vh", display: "flex", flexDirection: "column" },
+  page: { padding: "28px 40px", fontFamily: "'Trebuchet MS', 'Segoe UI', sans-serif", background: "#eaf1f7", minHeight: "100vh", display: "flex", flexDirection: "column" },
   header: { marginBottom: 20 },
-  title: { fontSize: 22, fontWeight: 800, margin: 0 },
-  subtitle: { fontSize: 13.5, color: "#888", margin: "4px 0 0" },
+  title: { fontSize: 22, fontWeight: 850, margin: 0, color: "#17324d" },
+  subtitle: { fontSize: 13.5, color: "#557086", margin: "4px 0 0" },
 
-  chatCard: { background: "white", borderRadius: 16, border: "1px solid #F0F0EE", flex: 1, display: "flex", flexDirection: "column", maxWidth: 760, margin: "0 auto", width: "100%", overflow: "hidden" },
+  chatCard: { background: "#f5f1e6", borderRadius: 10, border: "1px solid #c7d7e4", boxShadow: "0 5px 14px rgba(23,50,77,0.08)", flex: 1, display: "flex", flexDirection: "column", maxWidth: 760, margin: "0 auto", width: "100%", overflow: "hidden" },
   messageList: { flex: 1, overflowY: "auto", padding: "24px", display: "flex", flexDirection: "column", gap: 16, minHeight: 400, maxHeight: 520 },
 
   bubbleRow: (isUser) => ({ display: "flex", justifyContent: isUser ? "flex-end" : "flex-start" }),
   bubble: (isUser) => ({
     maxWidth: "78%", padding: "12px 16px", borderRadius: 14,
     fontSize: 13.5, lineHeight: 1.6,
-    background: isUser ? "linear-gradient(90deg, #2563eb, #7c3aed)" : "#F5F5F3",
-    color: isUser ? "white" : "#222",
+    background: isUser ? "#1f5f8b" : "#eaf1f7",
+    color: isUser ? "white" : "#234e70",
     borderBottomRightRadius: isUser ? 4 : 14,
     borderBottomLeftRadius: isUser ? 14 : 4,
   }),
 
-  welcomeBlock: { textAlign: "center", padding: "40px 20px", color: "#999" },
+  welcomeBlock: { textAlign: "center", padding: "40px 20px", color: "#557086" },
   welcomeIcon: { fontSize: 32, marginBottom: 10 },
-  welcomeTitle: { fontSize: 15, fontWeight: 700, color: "#444", margin: "0 0 6px" },
+  welcomeTitle: { fontSize: 15, fontWeight: 700, color: "#17324d", margin: "0 0 6px" },
   welcomeSub: { fontSize: 12.5, margin: 0 },
 
   shortcutGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "0 24px 16px" },
   shortcutBtn: {
-    padding: "10px 14px", borderRadius: 10, border: "1px solid #E5E5E0", background: "white",
-    fontSize: 12.5, fontWeight: 600, color: "#444", cursor: "pointer", textAlign: "left",
+    padding: "10px 14px", borderRadius: 8, border: "1px solid #c7d7e4", background: "#ffffff",
+    fontSize: 12.5, fontWeight: 600, color: "#234e70", cursor: "pointer", textAlign: "left",
   },
   actionRow: { display: "flex", gap: 8, padding: "0 24px 16px", flexWrap: "wrap" },
   actionBtn: {
-    padding: "8px 14px", borderRadius: 9, border: "1px solid #C7DCFC", background: "#EEF3FF",
-    color: "#2563eb", fontSize: 12, fontWeight: 700, cursor: "pointer",
+    padding: "8px 14px", borderRadius: 8, border: "1px solid #b8cddd", background: "#dce9f2",
+    color: "#1f5f8b", fontSize: 12, fontWeight: 700, cursor: "pointer",
   },
 
-  inputRow: { display: "flex", gap: 8, padding: 16, borderTop: "1px solid #F0F0EE" },
-  input: { flex: 1, padding: "11px 14px", borderRadius: 10, border: "1px solid #E0E0E0", fontSize: 13.5, fontFamily: "inherit" },
-  sendBtn: { padding: "11px 18px", borderRadius: 10, border: "none", background: "linear-gradient(90deg, #2563eb, #7c3aed)", color: "white", fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
+  inputRow: { display: "flex", gap: 8, padding: 16, borderTop: "1px solid #c7d7e4" },
+  input: { flex: 1, padding: "11px 14px", borderRadius: 8, border: "1px solid #b8cddd", fontSize: 13.5, fontFamily: "inherit", color: "#17324d" },
+  sendBtn: { padding: "11px 18px", borderRadius: 8, border: "none", background: "#1f5f8b", color: "white", fontSize: 13.5, fontWeight: 700, cursor: "pointer" },
 
   typingDots: { fontSize: 13, color: "#999", fontStyle: "italic" },
 };

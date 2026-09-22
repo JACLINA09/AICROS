@@ -88,3 +88,27 @@ def reject_industry(industry_id: int, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(industry)
     return industry
+
+@router.get("/industry/approved-partners")
+def get_approved_partners(db: Session = Depends(get_db)):
+    # Import your SQLAlchemy model for industry representatives
+    from app.models.industry import IndustryRepresentative  # Adjust import path if your model name differs
+    
+    try:
+        # Query partners where verification_status is Approved
+        partners = db.query(IndustryRepresentative).filter(
+            IndustryRepresentative.verification_status == "Approved"
+        ).all()
+        
+        # Map database columns to the format expected by the frontend
+        result = []
+        for p in partners:
+            result.append({
+                "name": p.company_name,
+                "role": getattr(p, "industry_sector", None) or "Technology & Enterprise",
+                "logo": getattr(p, "logo_url", None) # Will be null/empty if not provided, triggering the frontend initial letter fallback
+            })
+            
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch approved partners: {str(e)}")

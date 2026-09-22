@@ -51,9 +51,13 @@ def register_industry(db: Session, data) -> IndustryRepresentative:
 
     new_industry = IndustryRepresentative(
         company_name=data.company_name,
+        industry_sector=data.industry_sector,
+        website_url=data.website_url,
         contact_person=data.contact_person,
+        phone_number=data.phone_number,
         email=data.email,
         password=hash_password(data.password),
+        logo_url=data.logo_url,
         verification_status="Pending",
     )
     db.add(new_industry)

@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.simulation_task import SimulationTask
 from app.models.simulation_attempt import StudentSimulationAttempt
 from app.models.student_task_submission import StudentTaskSubmission
+from app.models.job import Job
 from app.schemas.simulation import (
     StartAttemptRequest, StartAttemptOut,
     SubmitAnswerRequest, SubmitAnswerOut,
@@ -15,6 +16,26 @@ from app.services.simulation.simulation_evaluator import grade_objective, grade_
 from app.schemas.simulation import SimulationTaskCreate
 
 router = APIRouter(prefix="/simulations", tags=["simulations"])
+
+
+@router.get("/tasks", response_model=list[SimulationTaskOut])
+def list_published_tasks(db: Session = Depends(get_db)):
+    tasks = db.query(SimulationTask).filter(SimulationTask.task_status == "Published").all()
+    return [
+        {
+            "task_id": task.task_id,
+            "job_id": task.job_id,
+            "job_title": job.job_title if job else "Career simulation",
+            "task_title": task.task_title,
+            "task_scenario": task.task_scenario,
+            "instructions": task.instructions,
+            "question_type": task.question_type,
+            "time_limit_minutes": task.time_limit_minutes,
+            "task_level": task.task_level,
+        }
+        for task in tasks
+        for job in [db.query(Job).filter(Job.job_id == task.job_id).first()]
+    ]
 
 
 @router.post("/start", response_model=StartAttemptOut)

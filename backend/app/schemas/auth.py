@@ -46,9 +46,13 @@ class StudentOut(BaseModel):
 
 class IndustryRegisterRequest(BaseModel):
     company_name: str
+    industry_sector: Optional[str] = None
+    website_url: Optional[str] = None
     contact_person: Optional[str] = None
+    phone_number: Optional[str] = None
     email: EmailStr
     password: str
+    logo_url: Optional[str] = None
 
 
 class IndustryOut(BaseModel):

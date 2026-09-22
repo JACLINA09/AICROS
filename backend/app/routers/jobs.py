@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.job import Job
 from app.models.job_required_skill import JobRequiredSkill
 from app.models.job_application import JobApplication
+from app.models.simulation_attempt import StudentSimulationAttempt
 from app.models.resume import Resume
 from app.models.resume_skill import ResumeSkill
 from app.schemas.job import JobOut, JobApplicationCreate, JobApplicationOut
@@ -22,6 +23,14 @@ def _get_student_skills(db: Session, student_id: int) -> list[str]:
         return []
     skills = db.query(ResumeSkill).filter(ResumeSkill.resume_id == resume.resume_id).all()
     return [s.skill_name for s in skills]
+
+
+def _simulation_completed(db: Session, student_id: int, job_id: int) -> bool:
+    return db.query(StudentSimulationAttempt).filter(
+        StudentSimulationAttempt.student_id == student_id,
+        StudentSimulationAttempt.job_id == job_id,
+        StudentSimulationAttempt.attempt_status == "Completed",
+    ).first() is not None
 
 
 @router.get("", response_model=list[JobOut])
@@ -48,10 +57,40 @@ def list_jobs(student_id: int, db: Session = Depends(get_db)):
             "compatibility_score": match["compatibility_score"],
             "matched_skills": match["matched_skills"],
             "missing_skills": match["missing_skills"],
+            "simulation_completed": _simulation_completed(db, student_id, job.job_id),
         })
 
     results.sort(key=lambda j: j["compatibility_score"], reverse=True)
     return results
+
+
+@router.get("/calendar/{student_id}")
+def get_student_calendar_events(student_id: int, db: Session = Depends(get_db)):
+    applications = db.query(JobApplication).filter(JobApplication.student_id == student_id).all()
+    jobs = db.query(Job).all()
+    events = []
+
+    for job in jobs:
+        if job.posted_at:
+            events.append({
+                "id": f"job-{job.job_id}",
+                "date": job.posted_at.isoformat(),
+                "title": job.job_title or "New opportunity",
+                "type": "opportunity",
+            })
+
+    for application in applications:
+        job = db.query(Job).filter(Job.job_id == application.job_id).first()
+        if application.applied_at:
+            events.append({
+                "id": f"application-{application.application_id}",
+                "date": application.applied_at.isoformat(),
+                "title": job.job_title if job else "Job application",
+                "type": "application",
+                "status": application.application_status,
+            })
+
+    return events
 
 
 @router.get("/{job_id}", response_model=JobOut)
@@ -77,11 +116,15 @@ def get_job(job_id: int, student_id: int, db: Session = Depends(get_db)):
         "compatibility_score": match["compatibility_score"],
         "matched_skills": match["matched_skills"],
         "missing_skills": match["missing_skills"],
+        "simulation_completed": _simulation_completed(db, student_id, job.job_id),
     }
 
 
 @router.post("/apply", response_model=JobApplicationOut)
 def apply_to_job(data: JobApplicationCreate, db: Session = Depends(get_db)):
+    if not _simulation_completed(db, data.student_id, data.job_id):
+        raise HTTPException(status_code=403, detail="Complete the career simulation for this job before applying.")
+
     existing = db.query(JobApplication).filter(
         JobApplication.student_id == data.student_id,
         JobApplication.job_id == data.job_id,

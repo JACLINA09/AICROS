@@ -1,5 +1,14 @@
 const API_BASE_URL = "http://localhost:8000";
 
+export async function getPublishedTasks() {
+  const res = await fetch(`${API_BASE_URL}/simulations/tasks`);
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.detail || "Failed to load simulation tasks.");
+  }
+  return res.json();
+}
+
 export async function startAttempt(studentId, jobId) {
   const res = await fetch(`${API_BASE_URL}/simulations/start`, {
     method: "POST",
